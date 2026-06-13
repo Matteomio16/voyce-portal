@@ -207,19 +207,31 @@ let currentCommission = null;
 function navigate(page, state) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+    // Pre-render commission content into page-commission before showing it
     if (page === 'commission' && state) {
         currentCommission = state;
         const container = document.getElementById('page-commission');
         if (container) {
             const inner = container.querySelector('.commission-inner');
-            if (inner) inner.replaceWith(renderCommissionPage(state));
-            else container.appendChild(renderCommissionPage(state));
+            const rendered = renderCommissionPage(state, state.name || state);
+            if (inner) inner.replaceWith(rendered);
+            else container.appendChild(rendered);
         }
     }
+
+    // Activate the target page
     const pageEl = document.getElementById('page-' + page);
-    if (pageEl) pageEl.classList.add('active');
-    const link = document.querySelector(`[data-page="${page}"]`);
+    if (pageEl) {
+        pageEl.classList.add('active');
+    }
+
+    // Activate the sidebar nav link — also handle commission page by highlighting 'members'
+    const navPages = ['dashboard', 'members', 'knowledge', 'directory'];
+    const navPage = navPages.includes(page) ? page : 'members';
+    const link = document.querySelector(`[data-page="${navPage}"]`);
     if (link) link.classList.add('active');
+
     window.scrollTo(0, 0);
 }
 
@@ -547,21 +559,9 @@ function renderMembersPage(data) {
 }
 
 function navigateToCommission(data, commName) {
-    navigate('commission', null);
-    // Wait for the page container to mount
-    const check = setInterval(() => {
-        const page = document.getElementById('page-commission');
-        if (page) {
-            let inner = page.querySelector('.commission-inner');
-            if (!inner) {
-                inner = h('div', { className: 'commission-inner flex-1' });
-                page.appendChild(inner);
-            }
-            inner.replaceWith(renderCommissionPage(data, commName));
-            clearInterval(check);
-        }
-    }, 20);
-    setTimeout(() => clearInterval(check), 2000);
+    const comm = data.commissions.find(c => c.name === commName);
+    if (!comm) return;
+    navigate('commission', comm);
 }
 
 function renderCommissionPage(data, commName) {

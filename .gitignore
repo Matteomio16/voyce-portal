@@ -10,6 +10,12 @@
 !voyce_portal.html
 !voyce_portal_data.json
 
+# Allow the github/ deployment folder
+!github/
+!github/index.html
+!github/voyce_portal_data.json
+!github/README.md
+
 # Python
 .venv/
 *.pyc

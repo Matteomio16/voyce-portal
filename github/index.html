@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>The Voyce - Member Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&family=Public+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#003c49",
+                    "on-primary": "#ffffff",
+                    "primary-container": "#005566",
+                    "on-primary-container": "#89c8dc",
+                    "secondary": "#586061",
+                    "on-secondary": "#ffffff",
+                    "secondary-container": "#dae1e3",
+                    "on-secondary-container": "#5d6466",
+                    "tertiary": "#562c02",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-container": "#714217",
+                    "on-tertiary-container": "#f3b17c",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-error-container": "#93000a",
+                    "background": "#f9f9fc",
+                    "on-background": "#1a1c1e",
+                    "surface": "#f9f9fc",
+                    "surface-dim": "#dadadc",
+                    "surface-bright": "#f9f9fc",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#f3f3f6",
+                    "surface-container": "#eeeef0",
+                    "surface-container-high": "#e8e8ea",
+                    "surface-container-highest": "#e2e2e5",
+                    "on-surface": "#1a1c1e",
+                    "on-surface-variant": "#40484b",
+                    "inverse-surface": "#2f3133",
+                    "inverse-on-surface": "#f0f0f3",
+                    "inverse-primary": "#91d0e4",
+                    "outline": "#70787c",
+                    "outline-variant": "#bfc8cb",
+                    "surface-tint": "#216678",
+                    "surface-variant": "#e2e2e5",
+                    "surface-base": "#F8F9FA",
+                    "surface-subtle": "#F1F3F4",
+                    "border-low": "#DDE1E4",
+                    "policy-blue": "#005566",
+                    "policy-mint": "#93B1B7",
+                    "dark-bg": "#0D0F10",
+                    "dark-surface": "#16181A",
+                    "dark-border": "#2C2F33"
+                },
+                borderRadius: {
+                    DEFAULT: "0.125rem",
+                    lg: "0.25rem",
+                    xl: "0.5rem",
+                    full: "0.75rem"
+                },
+                spacing: {
+                    "unit": "4px",
+                    "container-max": "1280px",
+                    "sidebar-width": "280px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "stack-sm": "8px",
+                    "stack-md": "16px",
+                    "stack-lg": "32px"
+                },
+                fontFamily: {
+                    "headline": ["Hanken Grotesk"],
+                    "body": ["Public Sans"]
+                }
+            }
+        }
+    }
+</script>
+<style>
+    body { font-family: 'Public Sans', sans-serif; background-color: #f9f9fc; color: #1a1c1e; }
+    .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .nav-link.active { color: #005566 !important; font-weight: 700 !important; background-color: #dae1e3 !important; border-left: 4px solid #005566 !important; }
+    .canvas-grid { background-image: radial-gradient(#DDE1E4 1px, transparent 1px); background-size: 24px 24px; }
+    .node-pulse { animation: pulse-ring 2s cubic-bezier(0.4,0,0.6,1) infinite; }
+    @keyframes pulse-ring { 0% { transform: scale(0.95); opacity: 0.5; } 50% { transform: scale(1.05); opacity: 0.2; } 100% { transform: scale(0.95); opacity: 0.5; } }
+    .drawer-transition { transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); }
+    .gradient-card { position: relative; overflow: hidden; }
+    .gradient-card::before { content: ''; position: absolute; top: 0; right: 0; width: 8rem; height: 8rem; border-radius: 0 0 0 100%; opacity: 0.08; z-index: 0; transition: transform 0.3s; }
+    .gradient-card:hover::before { transform: scale(1.1); }
+    .gradient-card > * { position: relative; z-index: 1; }
+    .tab-transition { transition: all 0.2s ease; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f3f3f6; }
+    ::-webkit-scrollbar-thumb { background: #bfc8cb; border-radius: 3px; }
+    .member-drawer-open { overflow: hidden; }
+
+    /* ===== DARK MODE OVERRIDES ===== */
+    .dark .bg-surface-container-lowest { background-color: #16181A !important; }
+    .dark .bg-surface-container-low { background-color: #1E2022 !important; }
+    .dark .bg-surface-container { background-color: #232527 !important; }
+    .dark .bg-surface-container-high { background-color: #2A2C2E !important; }
+    .dark .bg-surface-container-highest { background-color: #353739 !important; }
+    .dark .bg-surface-subtle { background-color: #2A2C2E !important; }
+    .dark .bg-surface-variant { background-color: #353739 !important; }
+    .dark .bg-background { background-color: #0D0F10 !important; }
+    .dark body, .dark .text-on-surface { color: #E2E2E5 !important; }
+    .dark .text-on-surface-variant { color: #9CA3A8 !important; }
+    .dark .text-primary { color: #91D0E4 !important; }
+    .dark .text-policy-blue { color: #76C7DF !important; }
+    .dark .border-border-low { border-color: #2C2F33 !important; }
+    .dark .border-policy-blue { border-color: #76C7DF !important; }
+    .dark .border-policy-mint { border-color: #4A7A82 !important; }
+    .dark .bg-policy-blue { background-color: #76C7DF !important; }
+    .dark .text-on-primary { color: #003C49 !important; }
+    .dark .bg-policy-blue\/5 { background-color: rgba(118,199,223,0.08) !important; }
+    .dark .border-policy-blue\/20 { border-color: rgba(118,199,223,0.2) !important; }
+    .dark .bg-policy-blue\/10 { background-color: rgba(118,199,223,0.12) !important; }
+    .dark .text-tertiary-container { color: #F3B17C !important; }
+    .dark .bg-tertiary-container { background-color: #714217 !important; }
+    .dark .bg-secondary-container { background-color: #2C3A3D !important; }
+    .dark .secondary-container\/50 { background-color: rgba(44,58,61,0.5) !important; }
+    .dark .bg-surface-container-lowest\/80 { background-color: rgba(22,24,26,0.85) !important; }
+    .dark .bg-surface-container-lowest\/90 { background-color: rgba(22,24,26,0.92) !important; }
+    .dark .hover\:bg-surface-subtle:hover { background-color: #2A2C2E !important; }
+    .dark .hover\:text-policy-blue:hover { color: #76C7DF !important; }
+    .dark .hover\:border-policy-blue:hover { border-color: #76C7DF !important; }
+    .dark .hover\:border-policy-mint:hover { border-color: #4A7A82 !important; }
+    .dark .text-outline { color: #70787C !important; }
+    .dark .placeholder\:text-on-surface-variant::placeholder { color: #9CA3A8 !important; }
+    .dark .canvas-grid { background-image: radial-gradient(#2C2F33 1px, transparent 1px) !important; }
+    .dark ::-webkit-scrollbar-track { background: #1A1C1E !important; }
+    .dark ::-webkit-scrollbar-thumb { background: #40484B !important; }
+    .dark .bg-black\/20 { background-color: rgba(0,0,0,0.5) !important; }
+    .dark .shadow-sm, .dark .shadow, .dark .shadow-md, .dark .shadow-lg, .dark .shadow-xl, .dark .shadow-2xl { box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.4) !important; }
+    .dark .bg-surface-container-lowest\/90 { background-color: rgba(22,24,26,0.94) !important; }
+</style>
+</head>
+<body class="bg-background text-on-background antialiased">
+<!-- App -->
+<div id="app"></div>
+
+<script>
+// ===== PORTAL DATA =====
+const PORTAL_DATA = null; // loaded from JSON
+
+async function init() {
+    const resp = await fetch('voyce_portal_data.json');
+    const data = await resp.json();
+    renderApp(data);
+}
+
+// ===== RENDER HELPERS =====
+function h(tag, attrs, ...children) {
+    const el = document.createElement(tag);
+    if (attrs) {
+        for (const [k, v] of Object.entries(attrs)) {
+            if (k === 'className') el.className = v;
+            else if (k === 'innerHTML') el.innerHTML = v;
+            else if (k.startsWith('on')) el.addEventListener(k.slice(2).toLowerCase(), v);
+            else if (k === 'style' && typeof v === 'object') Object.assign(el.style, v);
+            else el.setAttribute(k, v);
+        }
+    }
+    for (const c of children) {
+        if (c == null) continue;
+        el.append(typeof c === 'string' ? document.createTextNode(c) : c);
+    }
+    return el;
+}
+
+function initials(name) {
+    if (!name || typeof name !== 'string') return '??';
+    return name.split(' ').map(w => w && w[0]).filter(Boolean).join('').slice(0, 2).toUpperCase();
+}
+
+function memberInitials(name) {
+    return initials(name);
+}
+
+function getInitialsColor(name) {
+    const colors = ['bg-policy-blue/20 text-policy-blue', 'bg-tertiary-container/20 text-tertiary-container', 'bg-policy-mint/30 text-primary', 'bg-secondary-container/50 text-primary', 'bg-primary-container/20 text-primary-container'];
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    return colors[Math.abs(hash) % colors.length];
+}
+
+function truncate(str, len) {
+    if (!str) return '';
+    return str.length > len ? str.slice(0, len) + '…' : str;
+}
+
+function bioPreview(bio) {
+    if (!bio) return 'No biography available.';
+    return truncate(bio, 200);
+}
+
+// ===== NAVIGATION =====
+let currentCommission = null;
+
+function navigate(page, state) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    if (page === 'commission' && state) {
+        currentCommission = state;
+        const container = document.getElementById('page-commission');
+        if (container) {
+            const inner = container.querySelector('.commission-inner');
+            if (inner) inner.replaceWith(renderCommissionPage(state));
+            else container.appendChild(renderCommissionPage(state));
+        }
+    }
+    const pageEl = document.getElementById('page-' + page);
+    if (pageEl) pageEl.classList.add('active');
+    const link = document.querySelector(`[data-page="${page}"]`);
+    if (link) link.classList.add('active');
+    window.scrollTo(0, 0);
+}
+
+// ===== DARK MODE =====
+function toggleDarkMode() {
+    const html = document.documentElement;
+    html.classList.toggle('dark');
+    const isDark = html.classList.contains('dark');
+    localStorage.setItem('voyce-dark-mode', isDark ? 'dark' : 'light');
+    const icon = document.getElementById('dark-mode-icon');
+    const label = document.getElementById('dark-mode-label');
+    if (icon) icon.innerHTML = isDark ? 'light_mode' : 'dark_mode';
+    if (label) label.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+}
+
+// Restore dark mode preference
+(function() {
+    if (localStorage.getItem('voyce-dark-mode') === 'dark') {
+        document.documentElement.classList.add('dark');
+    }
+})();
+
+// ===== DRAWER STATE =====
+let currentMember = null;
+
+function openDrawer(member) {
+    currentMember = member;
+    const drawer = document.getElementById('member-drawer');
+    const overlay = document.getElementById('drawer-overlay');
+    if (!drawer || !overlay) return;
+    drawer.classList.remove('translate-x-full');
+    overlay.classList.remove('opacity-0', 'pointer-events-none');
+    document.body.classList.add('member-drawer-open');
+    renderDrawerContent(member);
+}
+
+function closeDrawer() {
+    const drawer = document.getElementById('member-drawer');
+    const overlay = document.getElementById('drawer-overlay');
+    if (!drawer || !overlay) return;
+    drawer.classList.add('translate-x-full');
+    overlay.classList.add('opacity-0', 'pointer-events-none');
+    document.body.classList.remove('member-drawer-open');
+}
+
+function renderDrawerContent(member) {
+    const container = document.getElementById('drawer-content');
+    if (!container) return;
+    container.innerHTML = '';
+    const tags = [
+        ...(member.interests ? member.interests.split(/[,;]/).map(s => s.trim()) : []),
+        ...(member.field_of_studies ? member.field_of_studies.split(/[,;]/).map(s => s.trim()) : []),
+        ...(member.companies ? member.companies.split(/[,;]/).map(s => s.trim()) : [])
+    ].filter(Boolean);
+    const uniqueTags = [...new Set(tags)];
+    const articles = member.article_titles ? member.article_titles.split('|').map(s => s.trim()).filter(Boolean) : [];
+    
+    container.append(
+        h('div', { className: 'flex justify-between items-start mb-8' },
+            h('button', { className: 'p-2 hover:bg-surface-subtle rounded-full text-on-surface-variant transition-colors', onClick: closeDrawer },
+                h('span', { className: 'material-symbols-outlined', innerHTML: 'close' })
+            ),
+            h('div', { className: 'flex gap-2' },
+                h('button', { className: 'p-2 border border-border-low hover:bg-surface-subtle rounded-xl text-on-surface-variant transition-colors' },
+                    h('span', { className: 'material-symbols-outlined', innerHTML: 'share' })
+                ),
+                h('button', { className: 'p-2 bg-policy-blue text-white rounded-xl hover:opacity-90 transition-opacity' },
+                    h('span', { className: 'material-symbols-outlined', innerHTML: 'mail' })
+                )
+            )
+        ),
+        h('div', { className: 'flex flex-col items-center mb-10' },
+            h('div', { className: `w-32 h-32 rounded-full border-4 border-policy-mint/20 mb-4 overflow-hidden shadow-sm flex items-center justify-center ${getInitialsColor(member.name)}` },
+                h('span', { className: 'font-headline text-3xl font-bold' }, initials(member.name))
+            ),
+            h('h3', { className: 'font-headline text-headline-md font-bold text-on-surface mb-1 text-center' }, member.name),
+            h('p', { className: 'font-body text-body-md text-policy-blue font-semibold mb-2' },
+                member.role === 'Commissioner' ? `${member.commission} Commissioner` : `${member.commission} Fellow`
+            ),
+            h('div', { className: 'flex gap-2 flex-wrap justify-center' },
+                member.where_from ? h('span', { className: 'px-2 py-1 bg-surface-container rounded-lg text-[10px] font-label-md text-on-surface-variant uppercase tracking-wider' }, member.where_from) : null,
+                member.uni ? h('span', { className: 'px-2 py-1 bg-surface-container rounded-lg text-[10px] font-label-md text-on-surface-variant uppercase tracking-wider' }, member.uni) : null
+            ),
+            h('div', { className: 'flex gap-2 flex-wrap justify-center mt-3 text-[11px] text-on-surface-variant' },
+                member.field_of_studies ? h('span', { className: 'px-2 py-1 bg-surface-subtle rounded-lg' }, member.field_of_studies) : null,
+                member.companies ? h('span', { className: 'px-2 py-1 bg-surface-subtle rounded-lg' }, member.companies) : null
+            )
+        ),
+        h('div', { className: 'mb-8' },
+            h('h4', { className: 'font-label-md text-label-md text-policy-blue mb-3 uppercase tracking-widest' }, 'Biography'),
+            h('p', { className: 'text-on-surface-variant leading-relaxed text-sm' }, member.bio || 'No biography available.')
+        ),
+        uniqueTags.length > 0 ? h('div', { className: 'mb-8' },
+            h('h4', { className: 'font-label-md text-label-md text-policy-blue mb-3 uppercase tracking-widest' }, 'Expertise'),
+            h('div', { className: 'flex flex-wrap gap-2' },
+                ...uniqueTags.map(t => h('span', { className: 'px-3 py-1 bg-policy-blue/5 border border-policy-blue/20 rounded-lg text-xs text-policy-blue' }, t))
+            )
+        ) : null,
+        articles.length > 0 ? h('div', { className: 'mb-8' },
+            h('h4', { className: 'font-label-md text-label-md text-policy-blue mb-4 uppercase tracking-widest' }, 'Publications'),
+            h('div', { className: 'space-y-3' },
+                ...articles.map(a => h('div', { className: 'flex gap-3 items-start' },
+                    h('div', { className: 'w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center shrink-0' },
+                        h('span', { className: 'material-symbols-outlined text-sm text-policy-blue', innerHTML: 'description' })
+                    ),
+                    h('p', { className: 'text-xs font-semibold text-on-surface' }, a)
+                ))
+            )
+        ) : null,
+        h('div', { className: 'mt-auto pt-6 border-t border-border-low text-center' },
+            h('p', { className: 'text-xs text-on-surface-variant' }, `${member.commission} • ${member.role}`)
+        )
+    );
+}
+
+// ===== SECTION RENDERERS =====
+function renderDashboard(data) {
+    const comm = data.commissions;
+    const commissioners = data.commissioners;
+    
+    return h('div', { className: 'flex-grow pt-24 px-gutter pb-16 max-w-container-max mx-auto w-full' },
+        // Welcome Section
+        h('section', { className: 'mb-stack-lg flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4' },
+            h('div', null,
+                h('h2', { className: 'font-headline text-headline-lg-mobile md:text-headline-lg text-primary' }, 'The Voyce Member Portal'),
+                h('p', { className: 'font-body text-body-md text-on-surface-variant mt-2 max-w-2xl' },
+                    `${data.total_members} members across ${comm.length} commissions. Explore the network, browse knowledge, and connect.`
+                )
+            ),
+            h('button', { className: 'bg-policy-blue text-on-primary px-4 py-2 rounded font-label-md text-label-md flex items-center gap-2 hover:bg-primary-container transition-colors shadow-sm', onClick: () => navigate('members', data) },
+                h('span', { className: 'material-symbols-outlined text-sm', innerHTML: 'groups' }),
+                'View All Members'
+            )
+        ),
+        // Stats bar
+        h('div', { className: 'grid grid-cols-2 md:grid-cols-4 gap-4 mb-stack-lg' },
+            h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-4' },
+                h('p', { className: 'font-headline text-headline-md font-bold text-policy-blue' }, String(data.total_members)),
+                h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant' }, 'Total Members')
+            ),
+            h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-4' },
+                h('p', { className: 'font-headline text-headline-md font-bold text-policy-blue' }, String(comm.length)),
+                h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant' }, 'Active Commissions')
+            ),
+            h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-4' },
+                h('p', { className: 'font-headline text-headline-md font-bold text-policy-blue' }, String(Object.keys(commissioners).length)),
+                h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant' }, 'Commissioners')
+            ),
+            h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-4' },
+                h('p', { className: 'font-headline text-headline-md font-bold text-policy-blue' }, String(comm.reduce((s, c) => s + c.member_count - c.members.filter(m => m.role === 'Commissioner').length, 0))),
+                h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant' }, 'Fellows')
+            )
+        ),
+        // Bento Grid
+        h('div', { className: 'grid grid-cols-1 md:grid-cols-12 gap-6' },
+            // Commissions Overview - Span 8
+            h('div', { className: 'col-span-1 md:col-span-8 flex flex-col gap-4' },
+                h('div', { className: 'flex items-center justify-between' },
+                    h('h3', { className: 'font-headline text-headline-sm text-on-surface flex items-center gap-2' },
+                        h('span', { className: 'material-symbols-outlined text-policy-blue', innerHTML: 'account_tree' }),
+                        'Active Commissions'
+                    ),
+                    h('a', { className: 'font-label-md text-label-md text-policy-blue hover:underline cursor-pointer', onClick: () => navigate('members', data) }, 'View All')
+                ),
+                h('div', { className: 'grid grid-cols-1 sm:grid-cols-2 gap-4' },
+                    ...comm.slice(0, 6).map(c => {
+                        const commName = c.name;
+                        return h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-4 hover:border-policy-mint transition-colors group cursor-pointer flex flex-col', onClick: () => navigateToCommission(data, commName) },
+                            h('div', { className: 'flex justify-between items-start mb-3' },
+                                h('span', { className: 'bg-surface-container px-2 py-1 rounded font-label-md text-label-md text-on-surface-variant' }, commName),
+                                h('span', { className: 'material-symbols-outlined text-on-surface-variant group-hover:text-policy-blue transition-colors text-sm', innerHTML: 'arrow_forward' })
+                            ),
+                            h('h4', { className: 'font-body-lg text-body-lg font-semibold text-primary mb-2' }, c.commissioner || 'Commissioner'),
+                            h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant mb-4' }, `${c.member_count} members`),
+                            h('div', { className: 'mt-auto flex items-center gap-2' },
+                                ...c.members.slice(0, 3).map(m => {
+                                    const cc = getInitialsColor(m.name);
+                                    return h('div', { className: `w-7 h-7 rounded-full ${cc} flex items-center justify-center text-[10px] font-bold border border-white -mr-1.5`, title: m.name }, initials(m.name));
+                                }),
+                                c.members.length > 3 ? h('span', { className: 'font-body-sm text-body-sm text-on-surface-variant ml-1' }, `+${c.members.length - 3}`) : null
+                            )
+                        );
+                    })
+                )
+            ),
+            // Recent Activity / Pinned - Span 4
+            h('div', { className: 'col-span-1 md:col-span-4 flex flex-col gap-4' },
+                h('h3', { className: 'font-headline text-headline-sm text-on-surface flex items-center gap-2' },
+                    h('span', { className: 'material-symbols-outlined text-tertiary-container', innerHTML: 'flag' }),
+                    'Commission Leads'
+                ),
+                h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-4 flex-grow flex flex-col gap-3' },
+                    ...Object.entries(commissioners).slice(0, 8).map(([c, name]) =>
+                        h('div', { className: 'flex items-center gap-3 p-3 rounded hover:bg-surface-subtle transition-colors cursor-pointer border border-transparent hover:border-border-low', onClick: () => navigateToCommission(data, c) },
+                            h('div', { className: `w-8 h-8 rounded-full ${getInitialsColor(name)} flex items-center justify-center text-xs font-bold shrink-0` }, initials(name)),
+                            h('div', { className: 'min-w-0' },
+                                h('h5', { className: 'font-body-md text-body-md font-semibold text-primary truncate' }, name),
+                                h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant truncate' }, `${c} Commissioner`)
+                            )
+                        )
+                    )
+                )
+            ),
+            // Knowledge Hub Preview - Span 6
+            h('div', { className: 'col-span-1 md:col-span-6 flex flex-col gap-4 mt-2' },
+                h('div', { className: 'flex items-center justify-between' },
+                    h('h3', { className: 'font-headline text-headline-sm text-on-surface flex items-center gap-2' },
+                        h('span', { className: 'material-symbols-outlined text-policy-blue', innerHTML: 'menu_book' }),
+                        'Knowledge Hub'
+                    ),
+                    h('a', { className: 'font-label-md text-label-md text-policy-blue hover:underline cursor-pointer', onClick: () => navigate('knowledge', data) }, 'Browse Hub')
+                ),
+                h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl overflow-hidden' },
+                    h('div', { className: 'bg-surface-container-low px-4 py-2 border-b border-border-low' },
+                        h('span', { className: 'font-label-md text-label-md text-on-surface-variant' }, 'Featured resources from across commissions')
+                    ),
+                    h('div', { className: 'divide-y divide-border-low' },
+                        ...['Policy Writing Standards', 'Research Methodology Guide', 'Commission Onboarding Kit', 'Outreach Templates'].map((title, i) =>
+                            h('div', { className: 'flex items-center gap-3 p-3 hover:bg-surface-subtle transition-colors cursor-pointer', onClick: () => navigate('knowledge', data) },
+                                h('div', { className: 'w-8 h-8 rounded bg-surface-subtle flex items-center justify-center text-on-surface-variant' },
+                                    h('span', { className: 'material-symbols-outlined text-sm', innerHTML: ['description', 'analytics', 'book', 'campaign'][i] })
+                                ),
+                                h('div', { className: 'flex-1 min-w-0' },
+                                    h('h4', { className: 'font-body-md text-body-md font-semibold text-on-surface truncate' }, title),
+                                    h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant' }, `${['Policy Commission', 'Research', 'Operations', 'Outreach'][i]} • Updated recently`)
+                                ),
+                                h('span', { className: 'material-symbols-outlined text-on-surface-variant text-sm', innerHTML: 'chevron_right' })
+                            )
+                        )
+                    )
+                )
+            ),
+            // Network Members Preview - Span 6
+            h('div', { className: 'col-span-1 md:col-span-6 flex flex-col gap-4 mt-2' },
+                h('div', { className: 'flex items-center justify-between' },
+                    h('h3', { className: 'font-headline text-headline-sm text-on-surface flex items-center gap-2' },
+                        h('span', { className: 'material-symbols-outlined text-policy-blue', innerHTML: 'hub' }),
+                        'Recent Members'
+                    ),
+                    h('a', { className: 'font-label-md text-label-md text-policy-blue hover:underline cursor-pointer', onClick: () => navigate('members', data) }, 'View All')
+                ),
+                h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl overflow-hidden' },
+                    h('div', { className: 'divide-y divide-border-low' },
+                        ...comm.flatMap(c => c.members).slice(0, 5).map(m =>
+                            h('div', { className: 'flex items-center justify-between p-3 hover:bg-surface-subtle transition-colors cursor-pointer', onClick: () => openDrawer(m) },
+                                h('div', { className: 'flex items-center gap-3 min-w-0' },
+                                    h('div', { className: `w-9 h-9 rounded-full ${getInitialsColor(m.name)} flex items-center justify-center text-xs font-bold shrink-0 border border-border-low` }, initials(m.name)),
+                                    h('div', { className: 'min-w-0' },
+                                        h('h4', { className: 'font-body-md text-body-md font-semibold text-primary truncate' }, m.name),
+                                        h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant truncate' }, `${m.commission} • ${m.role}`)
+                                    )
+                                ),
+                                h('span', { className: 'font-label-md text-label-md text-policy-blue shrink-0' }, 'View')
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    );
+}
+
+function renderMembersPage(data) {
+    return h('div', { className: 'flex-1 relative overflow-auto p-6 md:p-10 canvas-grid', id: 'map-canvas' },
+        // Center Node
+        h('div', { className: 'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' },
+            h('div', { className: 'w-20 h-20 md:w-24 md:h-24 rounded-full bg-policy-blue flex items-center justify-center text-white shadow-xl border-4 border-white z-10 relative' },
+                h('span', { className: 'material-symbols-outlined text-3xl md:text-4xl', innerHTML: 'policy' }),
+                h('div', { className: 'absolute inset-0 rounded-full border border-policy-blue node-pulse' })
+            )
+        ),
+        // SVG connections
+        (() => {
+            const svgNS = "http://www.w3.org/2000/svg";
+            const svg = document.createElementNS(svgNS, "svg");
+            svg.setAttribute('class', 'absolute inset-0 w-full h-full pointer-events-none opacity-30');
+            const positions = [
+                { x: '30%', y: '20%' }, { x: '70%', y: '20%' },
+                { x: '80%', y: '50%' }, { x: '70%', y: '80%' },
+                { x: '30%', y: '80%' }, { x: '20%', y: '50%' },
+                { x: '50%', y: '12%' }, { x: '50%', y: '88%' }
+            ];
+            positions.forEach(p => {
+                const line = document.createElementNS(svgNS, "line");
+                line.setAttribute('stroke', '#005566');
+                line.setAttribute('stroke-width', '1');
+                line.setAttribute('x1', '50%'); line.setAttribute('y1', '50%');
+                line.setAttribute('x2', p.x); line.setAttribute('y2', p.y);
+                svg.appendChild(line);
+            });
+            return svg;
+        })(),
+        // Commission nodes placed around the map — dynamically from data
+        ...(() => {
+            const icons = ['bolt', 'eco', 'flight', 'account_balance', 'public', 'groups', 'flag', 'gavel', 'trending_up', 'computer', 'psychology', 'scale'];
+            const positions = [
+                { x: '50%', y: '12%' }, { x: '28%', y: '18%' }, { x: '72%', y: '18%' },
+                { x: '85%', y: '40%' }, { x: '72%', y: '72%' }, { x: '28%', y: '72%' },
+                { x: '15%', y: '55%' }, { x: '50%', y: '88%' }, { x: '12%', y: '30%' },
+                { x: '88%', y: '28%' }, { x: '42%', y: '35%' }, { x: '58%', y: '65%' }
+            ];
+            return data.commissions.map((c, i) => {
+                const pos = positions[i % positions.length];
+                return h('div', { className: 'absolute transition-all hover:scale-105 cursor-pointer', style: { left: pos.x, top: pos.y, transform: 'translate(-50%, -50%)' }, onClick: () => navigateToCommission(data, c.name) },
+                    h('div', { className: 'p-2 md:p-3 bg-surface-container-lowest border border-border-low rounded-xl shadow-sm text-center hover:border-policy-blue transition-all min-w-[120px] md:min-w-[140px]' },
+                        h('div', { className: 'flex items-center justify-center gap-1 mb-1' },
+                            h('span', { className: 'material-symbols-outlined text-policy-blue text-sm md:text-base', innerHTML: icons[i % icons.length] }),
+                            h('h4', { className: 'font-label-md text-label-md text-on-surface text-xs md:text-sm' }, c.name)
+                        ),
+                        c.commissioner ? h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant text-[10px] md:text-xs' }, c.commissioner) : null,
+                        h('p', { className: 'text-[9px] md:text-[10px] text-on-surface-variant mt-0.5' }, `${c.member_count} members`)
+                    )
+                );
+            });
+        })(),
+        // Mini map legend
+        h('div', { className: 'absolute bottom-4 right-4 p-3 bg-surface-container-lowest/90 backdrop-blur border border-border-low rounded-xl shadow-lg z-30 text-xs' },
+            h('h5', { className: 'font-label-md text-label-md text-policy-blue mb-2' }, 'Map Legend'),
+            h('div', { className: 'space-y-1.5' },
+                h('div', { className: 'flex items-center gap-2' }, h('div', { className: 'w-3 h-3 bg-policy-blue rounded-full' }), h('span', { className: 'text-on-surface-variant' }, 'Active Commission')),
+                h('div', { className: 'flex items-center gap-2' }, h('div', { className: 'w-3 h-3 bg-surface-container-lowest border border-border-low rounded-full' }), h('span', { className: 'text-on-surface-variant' }, 'Commission Node')),
+            )
+        )
+    );
+}
+
+function navigateToCommission(data, commName) {
+    navigate('commission', null);
+    // Wait for the page container to mount
+    const check = setInterval(() => {
+        const page = document.getElementById('page-commission');
+        if (page) {
+            let inner = page.querySelector('.commission-inner');
+            if (!inner) {
+                inner = h('div', { className: 'commission-inner flex-1' });
+                page.appendChild(inner);
+            }
+            inner.replaceWith(renderCommissionPage(data, commName));
+            clearInterval(check);
+        }
+    }, 20);
+    setTimeout(() => clearInterval(check), 2000);
+}
+
+function renderCommissionPage(data, commName) {
+    const comm = data.commissions.find(c => c.name === commName);
+    if (!comm) return h('div', { className: 'flex-1 pt-24 px-gutter' }, 'Commission not found.');
+
+    const members = comm.members;
+    const commissioner = members.find(m => m.role === 'Commissioner');
+    const fellows = members.filter(m => m.role !== 'Commissioner');
+    const col = getInitialsColor(comm.name);
+
+    return h('div', { className: 'commission-inner flex-1 pt-24 pb-stack-lg px-margin-mobile md:px-gutter max-w-container-max mx-auto w-full' },
+        // Breadcrumb
+        h('div', { className: 'flex items-center gap-2 text-sm text-on-surface-variant mb-6' },
+            h('a', { className: 'hover:text-policy-blue cursor-pointer', onClick: () => navigate('dashboard', data) }, 'Dashboard'),
+            h('span', { className: 'material-symbols-outlined text-sm', innerHTML: 'chevron_right' }),
+            h('a', { className: 'hover:text-policy-blue cursor-pointer', onClick: () => navigate('members', data) }, 'Members'),
+            h('span', { className: 'material-symbols-outlined text-sm', innerHTML: 'chevron_right' }),
+            h('span', { className: 'text-policy-blue font-semibold' }, commName)
+        ),
+        // Commission header
+        h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-6 md:p-8 mb-6' },
+            h('div', { className: 'flex flex-col md:flex-row justify-between items-start md:items-center gap-4' },
+                h('div', { className: 'flex items-center gap-4' },
+                    h('div', { className: `w-16 h-16 rounded-full ${col} flex items-center justify-center text-xl font-bold shrink-0` }, initials(commName)),
+                    h('div', null,
+                        h('h2', { className: 'font-headline text-headline-md font-bold text-on-surface' }, commName),
+                        h('p', { className: 'font-body text-body-md text-on-surface-variant mt-1' },
+                            `${comm.member_count} members${commissioner ? ` • Commissioner: ${commissioner.name}` : ''}`
+                        )
+                    )
+                ),
+                h('button', { className: 'bg-policy-blue text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity flex items-center gap-2', onClick: () => navigate('directory', data) },
+                    h('span', { className: 'material-symbols-outlined text-sm', innerHTML: 'view_list' }),
+                    'View in Directory'
+                )
+            )
+        ),
+        // Commissioner spotlight
+        commissioner ? h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-5 mb-6 flex items-center gap-4 cursor-pointer hover:border-policy-mint transition-colors', onClick: () => openDrawer(commissioner) },
+            h('div', { className: `w-14 h-14 rounded-full ${getInitialsColor(commissioner.name)} flex items-center justify-center text-lg font-bold shrink-0 border-2 border-policy-blue/30` }, initials(commissioner.name)),
+            h('div', { className: 'flex-1 min-w-0' },
+                h('h4', { className: 'font-body-md text-body-md font-bold text-on-surface' }, commissioner.name),
+                h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant' }, 'Commissioner'),
+                commissioner.bio ? h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant mt-1 truncate' }, truncate(commissioner.bio, 120)) : null
+            ),
+            h('span', { className: 'material-symbols-outlined text-on-surface-variant', innerHTML: 'chevron_right' })
+        ) : null,
+        // Fellows grid
+        h('h3', { className: 'font-headline text-headline-sm text-on-surface mb-4 flex items-center gap-2' },
+            h('span', { className: 'material-symbols-outlined text-policy-blue', innerHTML: 'groups' }),
+            'Fellows',
+            h('span', { className: 'font-body-sm text-body-sm text-on-surface-variant font-normal ml-1' }, `(${fellows.length})`)
+        ),
+        fellows.length === 0 ? h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant py-8 text-center' }, 'No fellows assigned yet.') :
+        h('div', { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4' },
+            ...fellows.map(m => 
+                h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-4 hover:border-policy-mint hover:shadow-sm transition-all cursor-pointer flex flex-col gap-3', onClick: () => openDrawer(m) },
+                    h('div', { className: 'flex items-center gap-3' },
+                        h('div', { className: `w-10 h-10 rounded-full ${getInitialsColor(m.name)} flex items-center justify-center text-xs font-bold shrink-0 border border-border-low` }, initials(m.name)),
+                        h('div', { className: 'min-w-0' },
+                            h('h4', { className: 'font-body-md text-body-md font-semibold text-on-surface truncate' }, m.name),
+                            h('p', { className: 'text-[11px] text-on-surface-variant truncate' },
+                                [m.where_from, m.uni].filter(Boolean).join(' • ') || 'Fellow'
+                            )
+                        )
+                    ),
+                    m.interests ? h('div', { className: 'flex flex-wrap gap-1' },
+                        ...m.interests.split(',').slice(0, 3).map(t => h('span', { className: 'px-2 py-0.5 bg-surface-subtle rounded text-[10px] text-on-surface-variant' }, t.trim()))
+                    ) : null,
+                    m.bio ? h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant text-xs leading-relaxed' }, truncate(m.bio, 100)) : null
+                )
+            )
+        )
+    );
+}
+
+function renderKnowledgeHub(data) {
+    // Build dynamic tags from member interests across commissions
+    const allTags = [...new Set(data.commissions.flatMap(c => c.members).flatMap(m => (m.interests || '').split(',').map(t => t.trim()).filter(Boolean)))].slice(0, 30);
+    
+    const sections = [
+        { title: 'Featured Onboarding Essentials', icon: 'book', items: [
+            { name: 'The Voyce Method: Manifesto', type: 'Handbook', tag: 'V 2.1', source: 'Board of Directors', icon: 'book' },
+            { name: 'Drafting Policy Memos: A Standard', type: 'Guideline', tag: 'Core', source: 'Policy Commission', icon: 'history_edu' },
+            { name: 'Commissioner & Fellow Code of Conduct', type: 'Handbook', tag: 'V 1.0', source: 'Legal Affairs', icon: 'gavel' },
+            { name: 'Intro to European Policy Making', type: 'Course', tag: 'New', source: 'European Identity', icon: 'school' }
+        ]},
+        { title: 'Policy Writing Resources', icon: 'edit_document', items: data.commissions.filter(c => c.member_count > 0).slice(0, 6).map(c => ({
+            name: `${c.name} — Policy Briefs & Position Papers`,
+            type: 'Collection',
+            tag: `${c.member_count} contributors`,
+            source: c.commissioner || c.name,
+            icon: 'description'
+        }))},
+        { title: 'Research & Analysis', icon: 'analytics', items: allTags.slice(0, 6).map(tag => ({
+            name: `Research Notes: ${tag}`,
+            type: 'Topic Cluster',
+            tag: 'Trending',
+            source: `Cross-commission`,
+            icon: 'analytics'
+        }))},
+        { title: 'Commission Resources', icon: 'account_tree', items: data.commissions.map(c => ({
+            name: `${c.name} Commission — Member Roster & Docs`,
+            type: 'Roster',
+            tag: `${c.member_count} members`,
+            source: c.commissioner || 'Commissioner',
+            icon: 'groups'
+        }))}
+    ];
+
+    return h('div', { className: 'flex-1 pt-24 pb-stack-lg px-margin-mobile md:px-gutter max-w-container-max mx-auto w-full' },
+        h('header', { className: 'mb-stack-lg' },
+            h('h2', { className: 'font-headline text-headline-lg-mobile md:text-headline-lg text-policy-blue' }, 'Knowledge Hub'),
+            h('p', { className: 'font-body text-body-md text-on-surface-variant mt-2 max-w-2xl' }, 'A curated repository of internal documents, policy briefs, and operational handbooks.')
+        ),
+        h('div', { className: 'flex flex-col lg:flex-row gap-gutter' },
+            // Sidebar
+            h('aside', { className: 'w-full lg:w-64 shrink-0 mb-stack-md lg:mb-0' },
+                h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-4 sticky top-24' },
+                    h('h3', { className: 'font-label-md text-label-md text-on-surface-variant mb-4 uppercase tracking-wider' }, 'Categories'),
+                    h('ul', { className: 'space-y-1' },
+                        ...sections.map((s, i) =>
+                            h('li', null,
+                                h('a', { className: `flex items-center justify-between px-3 py-2 rounded-lg ${i === 0 ? 'bg-surface-subtle text-policy-blue font-bold' : 'text-on-surface-variant hover:bg-surface-subtle'} transition-colors font-label-md text-label-md cursor-pointer` },
+                                    h('span', null, s.title.replace('Featured ', '')),
+                                    i === 0 ? h('span', { className: 'bg-policy-blue/10 text-policy-blue px-2 py-0.5 rounded text-xs' }, 'New') : null
+                                )
+                            )
+                        )
+                    )
+                )
+            ),
+            // Content
+            h('div', { className: 'flex-1 space-y-stack-lg' },
+                ...sections.map((section, si) => {
+                    const isList = si === 1 || si === 3; // list layout for policy & commissions
+                    return h('section', null,
+                        h('div', { className: `flex items-center gap-2 mb-stack-sm ${si > 0 ? 'pb-2 border-b border-border-low' : ''}` },
+                            si > 0 ? h('span', { className: 'material-symbols-outlined text-on-surface-variant', innerHTML: section.icon }) : null,
+                            h('h3', { className: `font-headline text-headline-sm text-on-surface ${si === 0 ? '' : ''}` }, section.title)
+                        ),
+                        section.items.length === 0 ? h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant py-4 text-center' }, 'No resources yet.') :
+                        isList ? h('div', { className: 'flex flex-col space-y-2' },
+                            ...section.items.map(item =>
+                                h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-lg p-3 hover:border-outline-variant transition-colors flex items-center justify-between cursor-pointer group' },
+                                    h('div', { className: 'flex items-center gap-3 min-w-0' },
+                                        h('div', { className: 'w-9 h-9 rounded bg-surface-subtle flex items-center justify-center text-on-surface-variant group-hover:bg-policy-blue/10 group-hover:text-policy-blue transition-colors shrink-0' },
+                                            h('span', { className: 'material-symbols-outlined', innerHTML: item.icon })
+                                        ),
+                                        h('div', { className: 'min-w-0' },
+                                            h('h4', { className: 'font-body-md text-body-md font-semibold text-on-surface truncate' }, item.name),
+                                            h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate' }, item.source || item.updated || '')
+                                        )
+                                    ),
+                                    h('div', { className: 'hidden sm:flex items-center gap-2 shrink-0' },
+                                        item.tag ? h('span', { className: 'bg-surface-subtle px-2 py-1 rounded font-label-md text-label-md text-on-surface-variant text-[11px]' }, item.tag) : null,
+                                        item.updated ? h('span', { className: 'font-body-sm text-body-sm text-on-surface-variant text-[11px]' }, item.updated) : null,
+                                        h('span', { className: 'material-symbols-outlined text-on-surface-variant text-sm', innerHTML: si === 3 ? 'groups' : 'download' })
+                                    )
+                                )
+                            )
+                        ) : h('div', { className: 'grid grid-cols-1 sm:grid-cols-2 gap-stack-sm' },
+                            ...section.items.map(item =>
+                                h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-stack-md hover:border-policy-mint transition-colors group cursor-pointer gradient-card flex flex-col justify-between',
+                                    style: { backgroundImage: `linear-gradient(135deg, transparent 60%, ${si === 0 ? '#93B1B7' : '#005566'}08)` } },
+                                    h('div', null,
+                                        h('div', { className: 'flex items-center gap-2 mb-2' },
+                                            h('span', { className: `material-symbols-outlined text-policy-blue`, style: { fontVariationSettings: "'FILL' 1" }, innerHTML: item.icon }),
+                                            h('span', { className: 'font-label-md text-label-md text-on-surface-variant uppercase text-[10px]' }, item.type)
+                                        ),
+                                        h('h4', { className: 'font-headline-sm text-headline-sm text-on-surface group-hover:text-policy-blue transition-colors' }, item.name)
+                                    ),
+                                    h('div', { className: 'flex items-center justify-between mt-4' },
+                                        h('div', { className: 'flex items-center gap-2' },
+                                            item.source ? h('div', { className: 'w-6 h-6 rounded-full bg-surface-subtle flex items-center justify-center text-[9px] font-bold text-on-surface-variant' }, initials(item.source)) : null,
+                                            h('span', { className: 'font-body-sm text-body-sm text-on-surface-variant text-xs' }, item.source)
+                                        ),
+                                        item.tag ? h('span', { className: 'bg-surface-subtle px-2 py-1 rounded font-label-md text-label-md text-on-surface-variant text-[10px]' }, item.tag) : null
+                                    )
+                                )
+                            )
+                        )
+                    );
+                })
+            )
+        )
+    );
+}
+
+function renderStakeholderDirectory(data) {
+    // Flatten members as "stakeholders"
+    const allMembers = data.commissions.flatMap(c => c.members);
+    const rows = allMembers.map(m => ({
+        name: m.name,
+        initials: initials(m.name),
+        color: getInitialsColor(m.name),
+        role: m.role === 'Commissioner' ? 'Commissioner' : 'Fellow',
+        commission: m.commission,
+        email: `${m.name.toLowerCase().replace(/\s+/g, '.')}@voyce.europe`,
+        engagement: m.bio ? (m.bio.length > 100 ? 'High' : 'Medium') : 'Low',
+        bio: m.bio || '',
+        where_from: m.where_from || '',
+        uni: m.uni || '',
+        field_of_studies: m.field_of_studies || '',
+        interests: m.interests || '',
+        searchText: [m.name, m.bio, m.interests, m.where_from, m.uni, m.field_of_studies, m.companies].filter(Boolean).join(' ').toLowerCase()
+    }));
+
+    return h('div', { className: 'flex-1 pt-24 pb-stack-lg px-gutter max-w-container-max mx-auto w-full' },
+        h('header', { className: 'flex flex-col md:flex-row justify-between items-start md:items-end gap-stack-md pb-stack-md border-b border-border-low mb-stack-md' },
+            h('div', null,
+                h('h2', { className: 'font-headline text-headline-lg-mobile md:text-headline-lg font-bold text-primary' }, 'Member Directory'),
+                h('p', { className: 'font-body text-body-md text-on-surface-variant' }, `${allMembers.length} members across ${data.commissions.length} commissions.`)
+            ),
+            h('div', { className: 'flex gap-2' },
+                h('button', { className: 'bg-surface-subtle text-on-surface-variant font-label-md text-label-md px-stack-md py-stack-sm rounded hover:bg-surface-container transition-colors flex items-center gap-2', onClick: () => navigate('members', data) },
+                    h('span', { className: 'material-symbols-outlined text-sm', innerHTML: 'map' }),
+                    'Map View'
+                ),
+                h('button', { className: 'bg-policy-blue text-on-primary font-label-md text-label-md px-stack-md py-stack-sm rounded hover:opacity-90 transition-opacity flex items-center gap-2', onClick: () => navigate('dashboard', data) },
+                    h('span', { className: 'material-symbols-outlined text-sm', innerHTML: 'dashboard' }),
+                    'Dashboard'
+                )
+            )
+        ),
+        // Filters
+        h('section', { className: 'flex flex-wrap items-center gap-stack-md bg-surface-container-lowest p-stack-md rounded-xl border border-border-low mb-stack-md' },
+            h('div', { className: 'flex-1 min-w-[200px]' },
+                h('div', { className: 'relative' },
+                    h('span', { className: 'material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm', innerHTML: 'search' }),
+                    h('input', { className: 'w-full pl-9 pr-4 py-2 bg-surface-subtle border-none rounded-lg focus:ring-1 focus:ring-policy-blue text-body-md font-body-md placeholder:text-on-surface-variant', placeholder: 'Search by name, commission, or keyword...', id: 'directory-search', onInput: filterDirectory })
+                )
+            ),
+            h('div', { className: 'flex items-center gap-stack-sm flex-wrap' },
+                h('select', { className: 'bg-surface-subtle border-none rounded-lg focus:ring-1 focus:ring-policy-blue text-body-sm font-body-sm text-on-surface-variant py-2 pl-3 pr-8', id: 'commission-filter', onChange: filterDirectory },
+                    h('option', { value: '' }, 'All Commissions'),
+                    ...data.commissions.map(c => h('option', { value: c.name }, c.name))
+                ),
+                h('select', { className: 'bg-surface-subtle border-none rounded-lg focus:ring-1 focus:ring-policy-blue text-body-sm font-body-sm text-on-surface-variant py-2 pl-3 pr-8', id: 'role-filter', onChange: filterDirectory },
+                    h('option', { value: '' }, 'All Roles'),
+                    h('option', { value: 'Commissioner' }, 'Commissioners'),
+                    h('option', { value: 'Fellow' }, 'Fellows')
+                )
+            )
+        ),
+        // Table
+        h('section', { className: 'bg-surface-container-lowest border border-border-low rounded-xl overflow-hidden' },
+            h('div', { className: 'overflow-x-auto' },
+                h('table', { className: 'w-full text-left border-collapse', id: 'directory-table' },
+                    h('thead', null,
+                        h('tr', { className: 'bg-surface-container-low border-b border-border-low' },
+                            h('th', { className: 'py-3 px-4 font-label-md text-label-md text-on-secondary-container uppercase tracking-wider' }, 'Member'),
+                            h('th', { className: 'py-3 px-4 font-label-md text-label-md text-on-secondary-container uppercase tracking-wider' }, 'Commission'),
+                            h('th', { className: 'py-3 px-4 font-label-md text-label-md text-on-secondary-container uppercase tracking-wider hidden sm:table-cell' }, 'Role'),
+                            h('th', { className: 'py-3 px-4 font-label-md text-label-md text-on-secondary-container uppercase tracking-wider hidden md:table-cell' }, 'Origin'),
+                            h('th', { className: 'py-3 px-4 font-label-md text-label-md text-on-secondary-container uppercase tracking-wider hidden lg:table-cell' }, 'Field of Study'),
+                            h('th', { className: 'py-3 px-4 font-label-md text-label-md text-on-secondary-container uppercase tracking-wider hidden xl:table-cell' }, 'Expertise'),
+                            h('th', { className: 'py-3 px-4 font-label-md text-label-md text-on-secondary-container uppercase tracking-wider text-right' }, '')
+                        )
+                    ),
+                    h('tbody', { className: 'font-body-sm text-body-sm text-on-surface', id: 'directory-body' },
+                        ...rows.map(r =>
+                            h('tr', { className: 'border-b border-border-low hover:bg-surface-subtle transition-colors group cursor-pointer', 'data-search': r.searchText, onClick: () => {
+                                const m = allMembers.find(mm => mm.name === r.name);
+                                if (m) openDrawer(m);
+                            }},
+                                h('td', { className: 'py-3 px-4' },
+                                    h('div', { className: 'flex items-center gap-stack-sm' },
+                                        h('div', { className: `w-8 h-8 rounded-full ${r.color} flex items-center justify-center font-bold font-label-md text-label-md shrink-0` }, r.initials),
+                                        h('div', { className: 'min-w-0' },
+                                            h('p', { className: 'font-semibold text-primary truncate' }, r.name),
+                                            h('p', { className: 'text-on-surface-variant text-[11px] mt-0.5 truncate' }, r.email)
+                                        )
+                                    )
+                                ),
+                                h('td', { className: 'py-3 px-4' },
+                                    h('p', { className: 'font-medium text-sm' }, r.commission),
+                                    h('p', { className: 'text-on-surface-variant text-[11px]' }, r.role === 'Commissioner' ? 'Commissioner' : 'Fellow')
+                                ),
+                                h('td', { className: 'py-3 px-4 hidden sm:table-cell' },
+                                    h('span', { className: `inline-block px-2 py-0.5 rounded text-[11px] font-medium ${r.role === 'Commissioner' ? 'bg-policy-blue/10 text-policy-blue' : 'bg-secondary-container/50 text-on-surface-variant'}` }, r.role)
+                                ),
+                                h('td', { className: 'py-3 px-4 hidden md:table-cell text-on-surface-variant text-[11px]' },
+                                    r.where_from || '-'
+                                ),
+                                h('td', { className: 'py-3 px-4 hidden lg:table-cell text-on-surface-variant text-[11px] max-w-[150px] truncate' },
+                                    r.field_of_studies || '-'
+                                ),
+                                h('td', { className: 'py-3 px-4 hidden xl:table-cell' },
+                                    h('div', { className: 'flex gap-1 flex-wrap max-w-[180px]' },
+                                        r.interests ? r.interests.split(',').slice(0, 3).map(t => h('span', { className: 'px-1.5 py-0.5 bg-surface-subtle rounded text-[10px] text-on-surface-variant truncate max-w-[80px]' }, t.trim())) : h('span', { className: 'text-[11px] text-on-surface-variant' }, '-')
+                                    )
+                                ),
+                                h('td', { className: 'py-3 px-4 text-right' },
+                                    h('button', { className: 'text-on-surface-variant hover:text-policy-blue p-1 opacity-0 group-hover:opacity-100 transition-opacity' },
+                                        h('span', { className: 'material-symbols-outlined text-sm', innerHTML: 'chevron_right' })
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            ),
+            h('div', { className: 'p-stack-md border-t border-border-low flex justify-between items-center text-body-sm font-body-sm text-on-surface-variant' },
+                h('span', { id: 'directory-count' }, `Showing all ${rows.length} members`)
+            )
+        )
+    );
+}
+
+function filterDirectory() {
+    const search = (document.getElementById('directory-search')?.value || '').toLowerCase();
+    const commission = document.getElementById('commission-filter')?.value || '';
+    const role = document.getElementById('role-filter')?.value || '';
+    const rows = document.querySelectorAll('#directory-body tr');
+    let count = 0;
+    rows.forEach(row => {
+        const text = (row.textContent + ' ' + (row.getAttribute('data-search') || '')).toLowerCase();
+        const match = (!search || text.includes(search)) &&
+            (!commission || text.includes(commission.toLowerCase())) &&
+            (!role || text.includes(role.toLowerCase()));
+        row.style.display = match ? '' : 'none';
+        if (match) count++;
+    });
+    const countEl = document.getElementById('directory-count');
+    if (countEl) countEl.textContent = `Showing ${count} of ${rows.length} members`;
+}
+
+// ===== MAIN APP RENDER =====
+function renderApp(data) {
+    const app = document.getElementById('app');
+    app.innerHTML = '';
+    
+    const pages = ['dashboard', 'members', 'knowledge', 'directory', 'commission'];
+    const navItems = [
+        { id: 'dashboard', icon: 'dashboard', label: 'Dashboard' },
+        { id: 'members', icon: 'groups', label: 'Members Map' },
+        { id: 'knowledge', icon: 'menu_book', label: 'Knowledge Hub' },
+        { id: 'directory', icon: 'handshake', label: 'Directory' }
+    ];
+
+    // Sidebar
+    const sidebar = h('aside', { className: 'bg-surface-container-lowest w-sidebar-width h-screen fixed left-0 top-0 border-r border-border-low hidden md:flex flex-col py-stack-lg z-50' },
+        h('div', { className: 'px-gutter mb-stack-lg' },
+            h('h1', { className: 'font-headline text-headline-md font-bold text-policy-blue' }, 'The Voyce'),
+            h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant mt-1' }, 'Member Portal')
+        ),
+        h('nav', { className: 'flex-1 px-4 space-y-1' },
+            ...navItems.map(item =>
+                h('a', { className: `nav-link flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-subtle transition-colors duration-200 rounded-lg cursor-pointer ${item.id === 'dashboard' ? 'active' : ''}`, 'data-page': item.id, onClick: () => navigate(item.id, data) },
+                    h('span', { className: 'material-symbols-outlined', innerHTML: item.icon }),
+                    h('span', { className: 'font-label-md text-label-md' }, item.label)
+                )
+            )
+        ),
+        h('div', { className: 'mt-auto px-4' },
+            h('a', { className: 'flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-subtle transition-colors duration-200 rounded-lg cursor-pointer', onClick: toggleDarkMode },
+                h('span', { className: 'material-symbols-outlined', id: 'dark-mode-icon', innerHTML: document.documentElement.classList.contains('dark') ? 'light_mode' : 'dark_mode' }),
+                h('span', { className: 'font-label-md text-label-md', id: 'dark-mode-label' }, document.documentElement.classList.contains('dark') ? 'Light Mode' : 'Dark Mode')
+            ),
+            h('div', { className: 'flex items-center gap-3 px-4 py-4 mt-4 border-t border-border-low' },
+                h('div', { className: 'w-10 h-10 rounded-full bg-policy-blue flex items-center justify-center text-white font-bold text-sm' }, 'VM'),
+                h('div', null,
+                    h('p', { className: 'font-label-md text-label-md text-on-surface' }, 'VOYCE Portal'),
+                    h('p', { className: 'text-[10px] text-on-surface-variant' }, 'Member Network')
+                )
+            )
+        )
+    );
+
+    // Main area wrapper
+    const main = h('div', { className: 'md:ml-sidebar-width w-full flex flex-col min-h-screen' },
+        // Top bar
+        h('header', { className: 'bg-surface-container-lowest/80 backdrop-blur-md h-16 fixed top-0 right-0 w-full md:w-[calc(100%-280px)] z-40 border-b border-border-low flex justify-between items-center px-gutter' },
+            h('div', { className: 'flex items-center gap-4' },
+                h('button', { className: 'md:hidden p-2 text-on-surface-variant', onClick: () => toggleMobileMenu() },
+                    h('span', { className: 'material-symbols-outlined', innerHTML: 'menu' })
+                ),
+                h('h2', { className: 'font-headline text-headline-sm text-policy-blue hidden md:block' }, 'The Voyce')
+            ),
+            h('div', { className: 'flex-1 max-w-md mx-4 hidden md:block' },
+                h('div', { className: 'relative' },
+                    h('span', { className: 'material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm', innerHTML: 'search' }),
+                    h('input', { className: 'w-full bg-surface-container-low border-none rounded-full pl-9 pr-4 py-2 font-body-sm text-body-sm text-on-surface focus:ring-2 focus:ring-policy-blue outline-none transition-shadow shadow-sm focus:shadow-md', placeholder: 'Search members, documents, commissions...', id: 'global-search', onKeyup: (e) => {
+                        if (e.target.value.length > 2) globalSearch(e.target.value, data);
+                    }})
+                )
+            ),
+            h('div', { className: 'flex items-center gap-3' },
+                h('button', { className: 'text-on-surface-variant hover:bg-surface-subtle p-2 rounded-full transition-colors' },
+                    h('span', { className: 'material-symbols-outlined', innerHTML: 'notifications' })
+                ),
+                h('div', { className: 'w-8 h-8 rounded-full bg-policy-blue text-on-primary flex items-center justify-center font-label-md overflow-hidden border border-border-low' },
+                    h('span', { className: 'text-xs font-bold' }, 'VM')
+                )
+            )
+        ),
+        // Page containers
+        ...pages.map(p => h('div', { className: `page flex flex-col flex-grow ${p === 'dashboard' ? 'active' : ''}`, id: `page-${p}` },
+            p === 'dashboard' ? renderDashboard(data) :
+            p === 'members' ? h('div', { className: 'ml-0 flex flex-col flex-grow relative' },
+                h('header', { className: 'h-14 px-6 flex justify-between items-center bg-surface-container-lowest/80 backdrop-blur-md border-b border-border-low z-30 relative ml-0' },
+                    h('div', { className: 'flex items-center gap-3' },
+                        h('h2', { className: 'font-headline text-headline-sm text-policy-blue' }, 'Members Map'),
+                        h('div', { className: 'h-4 w-[1px] bg-border-low' }),
+                        h('nav', { className: 'flex gap-2' },
+                            h('button', { className: 'px-3 py-1 bg-surface-container rounded-lg text-policy-blue font-label-md text-label-md border border-policy-blue/20 text-xs' }, 'Commission View'),
+                            h('button', { className: 'px-3 py-1 hover:bg-surface-subtle rounded-lg text-on-surface-variant font-label-md text-label-md text-xs' }, 'Geographic View')
+                        )
+                    ),
+                    h('div', { className: 'flex items-center gap-3' },
+                        h('div', { className: 'relative hidden sm:block' },
+                            h('span', { className: 'material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm', innerHTML: 'search' }),
+                            h('input', { className: 'pl-9 pr-4 py-1.5 bg-surface-container border-none rounded-xl text-body-sm w-48 focus:ring-1 focus:ring-policy-blue text-xs', placeholder: 'Search members...', onKeyup: (e) => {
+                                const term = e.target.value.toLowerCase();
+                                document.querySelectorAll('#map-canvas > div:not(.absolute)').forEach(el => {
+                                    el.style.opacity = '1';
+                                });
+                            }})
+                        ),
+                        h('button', { className: 'p-1.5 hover:bg-surface-subtle rounded-xl text-on-surface-variant', onClick: () => navigate('directory', data) },
+                            h('span', { className: 'material-symbols-outlined', innerHTML: 'view_list' })
+                        )
+                    )
+                ),
+                renderMembersPage(data)
+            ) :
+            p === 'knowledge' ? renderKnowledgeHub(data) :
+            p === 'commission' ? h('div', { className: 'commission-inner flex-1' }) :
+            renderStakeholderDirectory(data)
+        )),
+        // Mobile bottom nav
+        h('nav', { className: 'md:hidden fixed bottom-0 left-0 w-full bg-surface-container-lowest border-t border-border-low flex justify-around items-center h-16 z-50' },
+            ...navItems.map(item =>
+                h('a', { className: `nav-link flex flex-col items-center justify-center w-full h-full ${item.id === 'dashboard' ? 'text-policy-blue font-bold' : 'text-on-surface-variant'} cursor-pointer`, 'data-page': item.id, onClick: () => navigate(item.id, data) },
+                    h('span', { className: 'material-symbols-outlined text-sm', innerHTML: item.icon }),
+                    h('span', { className: 'font-label-md text-[10px] mt-0.5' }, item.label)
+                )
+            )
+        )
+    );
+
+    // Drawer + Overlay
+    const drawer = h('div', { className: 'fixed right-0 top-0 h-screen w-full max-w-[400px] bg-surface-container-lowest border-l border-border-low shadow-2xl z-[60] drawer-transition translate-x-full', id: 'member-drawer' },
+        h('div', { className: 'h-full flex flex-col p-6 md:p-8 overflow-y-auto', id: 'drawer-content' })
+    );
+    const overlay = h('div', { className: 'fixed inset-0 bg-black/20 backdrop-blur-[2px] z-[55] opacity-0 pointer-events-none transition-opacity duration-300', id: 'drawer-overlay', onClick: closeDrawer });
+
+    app.append(sidebar, main, drawer, overlay);
+
+    // Mobile menu toggle
+    window.toggleMobileMenu = function() {
+        const s = document.querySelector('aside');
+        if (s) {
+            s.classList.toggle('hidden');
+            s.classList.toggle('flex');
+            s.classList.toggle('fixed');
+            s.classList.toggle('z-[60]');
+            s.classList.toggle('w-64');
+        }
+    };
+
+    // Global search
+    window.globalSearch = function(term, data) {
+        term = (term || '').toLowerCase();
+        const results = [];
+        data.commissions.forEach(c => {
+            c.members.forEach(m => {
+                const haystack = [
+                    m.name,
+                    m.bio,
+                    m.interests,
+                    m.where_from,
+                    m.uni,
+                    m.field_of_studies,
+                    m.companies
+                ].filter(Boolean).join(' ').toLowerCase();
+                if (haystack.includes(term)) {
+                    results.push(m);
+                }
+            });
+        });
+        if (results.length > 0) {
+            openDrawer(results[0]);
+        }
+    };
+
+    // Init directory search
+    setTimeout(() => {
+        const searchInput = document.getElementById('directory-search');
+        if (searchInput) {
+            searchInput.addEventListener('input', filterDirectory);
+        }
+    }, 100);
+}
+
+// ===== STARTUP =====
+init();
+</script>
+</body>
+</html>

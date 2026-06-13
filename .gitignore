@@ -1,4 +1,17 @@
-﻿.venv/
+﻿# Ignore everything by default
+/*
+
+# Allow website files
+!index.html
+!vercel.json
+!.gitignore
+
+# Allow the core portal files
+!voyce_portal.html
+!voyce_portal_data.json
+
+# Python
+.venv/
 *.pyc
 __pycache__/
 

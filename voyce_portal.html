@@ -199,7 +199,12 @@ function renderDrawerContent(member) {
     const container = document.getElementById('drawer-content');
     if (!container) return;
     container.innerHTML = '';
-    const tags = member.interests ? member.interests.split(/[,;]/).map(s => s.trim()).filter(Boolean) : [];
+    const tags = [
+        ...(member.interests ? member.interests.split(/[,;]/).map(s => s.trim()) : []),
+        ...(member.field_of_studies ? member.field_of_studies.split(/[,;]/).map(s => s.trim()) : []),
+        ...(member.companies ? member.companies.split(/[,;]/).map(s => s.trim()) : [])
+    ].filter(Boolean);
+    const uniqueTags = [...new Set(tags)];
     const articles = member.article_titles ? member.article_titles.split('|').map(s => s.trim()).filter(Boolean) : [];
     
     container.append(
@@ -227,16 +232,20 @@ function renderDrawerContent(member) {
             h('div', { className: 'flex gap-2 flex-wrap justify-center' },
                 member.where_from ? h('span', { className: 'px-2 py-1 bg-surface-container rounded-lg text-[10px] font-label-md text-on-surface-variant uppercase tracking-wider' }, member.where_from) : null,
                 member.uni ? h('span', { className: 'px-2 py-1 bg-surface-container rounded-lg text-[10px] font-label-md text-on-surface-variant uppercase tracking-wider' }, member.uni) : null
+            ),
+            h('div', { className: 'flex gap-2 flex-wrap justify-center mt-3 text-[11px] text-on-surface-variant' },
+                member.field_of_studies ? h('span', { className: 'px-2 py-1 bg-surface-subtle rounded-lg' }, member.field_of_studies) : null,
+                member.companies ? h('span', { className: 'px-2 py-1 bg-surface-subtle rounded-lg' }, member.companies) : null
             )
         ),
         h('div', { className: 'mb-8' },
             h('h4', { className: 'font-label-md text-label-md text-policy-blue mb-3 uppercase tracking-widest' }, 'Biography'),
             h('p', { className: 'text-on-surface-variant leading-relaxed text-sm' }, member.bio || 'No biography available.')
         ),
-        tags.length > 0 ? h('div', { className: 'mb-8' },
+        uniqueTags.length > 0 ? h('div', { className: 'mb-8' },
             h('h4', { className: 'font-label-md text-label-md text-policy-blue mb-3 uppercase tracking-widest' }, 'Expertise'),
             h('div', { className: 'flex flex-wrap gap-2' },
-                ...tags.map(t => h('span', { className: 'px-3 py-1 bg-policy-blue/5 border border-policy-blue/20 rounded-lg text-xs text-policy-blue' }, t))
+                ...uniqueTags.map(t => h('span', { className: 'px-3 py-1 bg-policy-blue/5 border border-policy-blue/20 rounded-lg text-xs text-policy-blue' }, t))
             )
         ) : null,
         articles.length > 0 ? h('div', { className: 'mb-8' },
@@ -599,7 +608,8 @@ function renderStakeholderDirectory(data) {
         commission: m.commission,
         email: `${m.name.toLowerCase().replace(/\s+/g, '.')}@voyce.europe`,
         engagement: m.bio ? (m.bio.length > 100 ? 'High' : 'Medium') : 'Low',
-        bio: m.bio || ''
+        bio: m.bio || '',
+        searchText: [m.name, m.bio, m.interests, m.where_from, m.uni, m.field_of_studies, m.companies].filter(Boolean).join(' ').toLowerCase()
     }));
 
     return h('div', { className: 'flex-1 pt-24 pb-stack-lg px-gutter max-w-container-max mx-auto w-full' },
@@ -650,7 +660,7 @@ function renderStakeholderDirectory(data) {
                     ),
                     h('tbody', { className: 'font-body-sm text-body-sm text-on-surface', id: 'directory-body' },
                         ...rows.map(r =>
-                            h('tr', { className: 'border-b border-border-low hover:bg-surface-subtle transition-colors group cursor-pointer', onClick: () => {
+                            h('tr', { className: 'border-b border-border-low hover:bg-surface-subtle transition-colors group cursor-pointer', 'data-search': r.searchText, onClick: () => {
                                 const m = allMembers.find(mm => mm.name === r.name);
                                 if (m) openDrawer(m);
                             }},
@@ -707,7 +717,7 @@ function filterDirectory() {
     const rows = document.querySelectorAll('#directory-body tr');
     let count = 0;
     rows.forEach(row => {
-        const text = row.textContent.toLowerCase();
+        const text = (row.textContent + ' ' + (row.getAttribute('data-search') || '')).toLowerCase();
         const match = (!search || text.includes(search)) &&
             (!commission || text.includes(commission.toLowerCase())) &&
             (!role || text.includes(role.toLowerCase()));
@@ -853,10 +863,20 @@ function renderApp(data) {
 
     // Global search
     window.globalSearch = function(term, data) {
+        term = (term || '').toLowerCase();
         const results = [];
         data.commissions.forEach(c => {
             c.members.forEach(m => {
-                if (m.name.toLowerCase().includes(term) || (m.bio && m.bio.toLowerCase().includes(term))) {
+                const haystack = [
+                    m.name,
+                    m.bio,
+                    m.interests,
+                    m.where_from,
+                    m.uni,
+                    m.field_of_studies,
+                    m.companies
+                ].filter(Boolean).join(' ').toLowerCase();
+                if (haystack.includes(term)) {
                     results.push(m);
                 }
             });

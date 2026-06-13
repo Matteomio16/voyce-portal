@@ -153,6 +153,7 @@ const PORTAL_DATA = null; // loaded from JSON
 async function init() {
     const resp = await fetch('voyce_portal_data.json');
     const data = await resp.json();
+    portalData = data;
     renderApp(data);
 }
 
@@ -202,6 +203,7 @@ function bioPreview(bio) {
 }
 
 // ===== NAVIGATION =====
+let portalData = null;
 let currentCommission = null;
 
 function navigate(page, state) {
@@ -214,7 +216,7 @@ function navigate(page, state) {
         const container = document.getElementById('page-commission');
         if (container) {
             const inner = container.querySelector('.commission-inner');
-            const rendered = renderCommissionPage(state, state.name || state);
+            const rendered = renderCommissionPage(portalData, state.name || state);
             if (inner) inner.replaceWith(rendered);
             else container.appendChild(rendered);
         }

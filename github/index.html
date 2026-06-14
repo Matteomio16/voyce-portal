@@ -13,60 +13,61 @@
         theme: {
             extend: {
                 colors: {
-                    "primary": "#003c49",
+                    "primary": "#002068",
                     "on-primary": "#ffffff",
-                    "primary-container": "#005566",
-                    "on-primary-container": "#89c8dc",
-                    "secondary": "#586061",
+                    "primary-container": "#003399",
+                    "on-primary-container": "#8aa4ff",
+                    "secondary": "#3259b6",
                     "on-secondary": "#ffffff",
-                    "secondary-container": "#dae1e3",
-                    "on-secondary-container": "#5d6466",
-                    "tertiary": "#562c02",
+                    "secondary-container": "#799dfe",
+                    "on-secondary-container": "#003183",
+                    "tertiary": "#22282f",
                     "on-tertiary": "#ffffff",
-                    "tertiary-container": "#714217",
-                    "on-tertiary-container": "#f3b17c",
+                    "tertiary-container": "#383e46",
+                    "on-tertiary-container": "#a3a9b2",
                     "error": "#ba1a1a",
                     "on-error": "#ffffff",
                     "error-container": "#ffdad6",
                     "on-error-container": "#93000a",
-                    "background": "#f9f9fc",
-                    "on-background": "#1a1c1e",
-                    "surface": "#f9f9fc",
-                    "surface-dim": "#dadadc",
-                    "surface-bright": "#f9f9fc",
+                    "background": "#faf9f5",
+                    "on-background": "#1b1c1a",
+                    "surface": "#faf9f5",
+                    "surface-dim": "#dbdad6",
+                    "surface-bright": "#faf9f5",
                     "surface-container-lowest": "#ffffff",
-                    "surface-container-low": "#f3f3f6",
-                    "surface-container": "#eeeef0",
-                    "surface-container-high": "#e8e8ea",
-                    "surface-container-highest": "#e2e2e5",
-                    "on-surface": "#1a1c1e",
-                    "on-surface-variant": "#40484b",
-                    "inverse-surface": "#2f3133",
-                    "inverse-on-surface": "#f0f0f3",
-                    "inverse-primary": "#91d0e4",
-                    "outline": "#70787c",
-                    "outline-variant": "#bfc8cb",
-                    "surface-tint": "#216678",
-                    "surface-variant": "#e2e2e5",
-                    "surface-base": "#F8F9FA",
+                    "surface-container-low": "#f4f4f0",
+                    "surface-container": "#efeeea",
+                    "surface-container-high": "#e9e8e4",
+                    "surface-container-highest": "#e3e2df",
+                    "on-surface": "#1b1c1a",
+                    "on-surface-variant": "#444653",
+                    "inverse-surface": "#2f312e",
+                    "inverse-on-surface": "#f2f1ed",
+                    "inverse-primary": "#b5c4ff",
+                    "outline": "#747684",
+                    "outline-variant": "#c4c5d5",
+                    "surface-tint": "#3557bc",
+                    "surface-variant": "#e3e2df",
+                    "surface-base": "#FDFCF8",
                     "surface-subtle": "#F1F3F4",
-                    "border-low": "#DDE1E4",
-                    "policy-blue": "#005566",
+                    "border-low": "#e3e2df",
+                    "policy-blue": "#003399",
                     "policy-mint": "#93B1B7",
                     "dark-bg": "#0D0F10",
                     "dark-surface": "#16181A",
                     "dark-border": "#2C2F33"
                 },
                 borderRadius: {
-                    DEFAULT: "0.125rem",
-                    lg: "0.25rem",
-                    xl: "0.5rem",
-                    full: "0.75rem"
+                    DEFAULT: "0.5rem",
+                    lg: "0.75rem",
+                    xl: "1rem",
+                    "2xl": "1.5rem",
+                    full: "9999px"
                 },
                 spacing: {
                     "unit": "4px",
-                    "container-max": "1280px",
-                    "sidebar-width": "280px",
+                    "container-max": "1440px",
+                    "sidebar-width": "260px",
                     "gutter": "24px",
                     "margin-mobile": "16px",
                     "stack-sm": "8px",
@@ -75,18 +76,18 @@
                 },
                 fontFamily: {
                     "headline": ["Hanken Grotesk"],
-                    "body": ["Public Sans"]
+                    "body": ["Hanken Grotesk"]
                 }
             }
         }
     }
 </script>
 <style>
-    body { font-family: 'Public Sans', sans-serif; background-color: #f9f9fc; color: #1a1c1e; }
+    body { font-family: 'Hanken Grotesk', sans-serif; background-color: #faf9f5; color: #1b1c1a; }
     .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
     .page { display: none !important; }
     .page.active { display: flex !important; flex-direction: column; flex-grow: 1; }
-    .nav-link.active { color: #005566 !important; font-weight: 700 !important; background-color: #dae1e3 !important; border-left: 4px solid #005566 !important; }
+    .nav-link.active { color: #003399 !important; font-weight: 700 !important; background-color: #799dfe20 !important; border-left: 4px solid #003399 !important; }
     .canvas-grid { background-image: radial-gradient(#DDE1E4 1px, transparent 1px); background-size: 24px 24px; }
     .node-pulse { animation: pulse-ring 2s cubic-bezier(0.4,0,0.6,1) infinite; }
     @keyframes pulse-ring { 0% { transform: scale(0.95); opacity: 0.5; } 50% { transform: scale(1.05); opacity: 0.2; } 100% { transform: scale(0.95); opacity: 0.5; } }
@@ -112,34 +113,29 @@
     .dark .bg-background { background-color: #0D0F10 !important; }
     .dark body, .dark .text-on-surface { color: #E2E2E5 !important; }
     .dark .text-on-surface-variant { color: #9CA3A8 !important; }
-    .dark .text-primary { color: #91D0E4 !important; }
-    .dark .text-policy-blue { color: #76C7DF !important; }
+    .dark .text-primary { color: #b5c4ff !important; }
+    .dark .text-policy-blue { color: #b5c4ff !important; }
     .dark .border-border-low { border-color: #2C2F33 !important; }
-    .dark .border-policy-blue { border-color: #76C7DF !important; }
+    .dark .border-policy-blue { border-color: #b5c4ff !important; }
     .dark .border-policy-mint { border-color: #4A7A82 !important; }
-    .dark .bg-policy-blue { background-color: #76C7DF !important; }
-    .dark .text-on-primary { color: #003C49 !important; }
-    .dark .bg-policy-blue\/5 { background-color: rgba(118,199,223,0.08) !important; }
-    .dark .border-policy-blue\/20 { border-color: rgba(118,199,223,0.2) !important; }
-    .dark .bg-policy-blue\/10 { background-color: rgba(118,199,223,0.12) !important; }
-    .dark .text-tertiary-container { color: #F3B17C !important; }
-    .dark .bg-tertiary-container { background-color: #714217 !important; }
+    .dark .bg-policy-blue { background-color: #b5c4ff !important; }
+    .dark .bg-policy-mint { background-color: #4A7A82 !important; }
+    .dark .text-on-primary { color: #002068 !important; }
     .dark .bg-secondary-container { background-color: #2C3A3D !important; }
-    .dark .secondary-container\/50 { background-color: rgba(44,58,61,0.5) !important; }
+    .dark .text-on-secondary-container { color: #b5c4ff !important; }
     .dark .bg-surface-container-lowest\/80 { background-color: rgba(22,24,26,0.85) !important; }
     .dark .bg-surface-container-lowest\/90 { background-color: rgba(22,24,26,0.92) !important; }
     .dark .hover\:bg-surface-subtle:hover { background-color: #2A2C2E !important; }
-    .dark .hover\:text-policy-blue:hover { color: #76C7DF !important; }
-    .dark .hover\:border-policy-blue:hover { border-color: #76C7DF !important; }
+    .dark .hover\:text-policy-blue:hover { color: #b5c4ff !important; }
+    .dark .hover\:border-policy-blue:hover { border-color: #b5c4ff !important; }
     .dark .hover\:border-policy-mint:hover { border-color: #4A7A82 !important; }
-    .dark .text-outline { color: #70787C !important; }
+    .dark .text-outline { color: #747684 !important; }
     .dark .placeholder\:text-on-surface-variant::placeholder { color: #9CA3A8 !important; }
     .dark .canvas-grid { background-image: radial-gradient(#2C2F33 1px, transparent 1px) !important; }
     .dark ::-webkit-scrollbar-track { background: #1A1C1E !important; }
     .dark ::-webkit-scrollbar-thumb { background: #40484B !important; }
     .dark .bg-black\/20 { background-color: rgba(0,0,0,0.5) !important; }
     .dark .shadow-sm, .dark .shadow, .dark .shadow-md, .dark .shadow-lg, .dark .shadow-xl, .dark .shadow-2xl { box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.4) !important; }
-    .dark .bg-surface-container-lowest\/90 { background-color: rgba(22,24,26,0.94) !important; }
 </style>
 </head>
 <body class="bg-background text-on-background antialiased">
@@ -355,27 +351,35 @@ function renderDashboard(data) {
     const commissioners = data.commissioners;
     
     return h('div', { className: 'flex-grow pt-24 px-gutter pb-16 max-w-container-max mx-auto w-full' },
-        // Welcome Section
-        h('section', { className: 'mb-stack-lg flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4' },
-            h('div', null,
-                h('h2', { className: 'font-headline text-headline-lg-mobile md:text-headline-lg text-primary' }, 'VOYCE Member Portal'),
-                h('p', { className: 'font-body text-body-md text-on-surface-variant mt-2 max-w-2xl' },
-                    `${data.total_members} members across ${comm.length} commissions. Explore the network, browse knowledge, and connect.`
+        // Welcome Hero Banner
+        h('section', { className: 'mb-stack-lg rounded-2xl overflow-hidden' },
+            h('div', { className: 'relative bg-gradient-to-br from-primary via-primary-container to-secondary px-8 py-10 md:py-14' },
+                h('div', { className: 'relative z-10' },
+                    h('p', { className: 'font-headline text-sm font-semibold text-on-primary/70 uppercase tracking-widest mb-2' }, 'Dashboard Overview'),
+                    h('h2', { className: 'font-headline text-headline-lg-mobile md:text-headline-lg font-bold text-white mb-3' }, 'VOYCE Member Portal'),
+                    h('p', { className: 'font-body text-body-md text-white/70 max-w-xl mb-6' },
+                        `${data.total_members} members across ${comm.length} commissions. Explore the network, browse knowledge, and connect.`
+                    ),
+                    h('div', { className: 'flex flex-wrap gap-6 mb-8' },
+                        h('div', { className: 'text-white' }, h('p', { className: 'font-headline text-headline-md font-bold' }, String(data.total_members)), h('p', { className: 'font-body-sm text-sm text-white/60' }, 'Members')),
+                        h('div', { className: 'text-white' }, h('p', { className: 'font-headline text-headline-md font-bold' }, String(comm.length)), h('p', { className: 'font-body-sm text-sm text-white/60' }, 'Commissions')),
+                        h('div', { className: 'text-white' }, h('p', { className: 'font-headline text-headline-md font-bold' }, String(Object.keys(commissioners).length)), h('p', { className: 'font-body-sm text-sm text-white/60' }, 'Commissioners'))
+                    ),
+                    h('button', { className: 'bg-white text-primary px-6 py-3 rounded-full font-label-md text-label-md font-bold flex items-center gap-2 hover:bg-white/90 transition-colors shadow-lg', onClick: () => navigate('members', data) },
+                        h('span', { className: 'material-symbols-outlined text-sm', innerHTML: 'groups' }),
+                        'View Members Map'
+                    )
                 )
-            ),
-            h('button', { className: 'bg-policy-blue text-on-primary px-4 py-2 rounded font-label-md text-label-md flex items-center gap-2 hover:bg-primary-container transition-colors shadow-sm', onClick: () => navigate('members', data) },
-                h('span', { className: 'material-symbols-outlined text-sm', innerHTML: 'groups' }),
-                'View All Members'
             )
         ),
-        // Stats bar
+        // Stats bar (compact)
         h('div', { className: 'grid grid-cols-2 md:grid-cols-4 gap-4 mb-stack-lg' },
             h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-4' },
-                h('p', { className: 'font-headline text-headline-md font-bold text-policy-blue' }, String(data.total_members)),
+                h('p', { className: 'font-headline text-headline-md font-bold text-primary' }, String(data.total_members)),
                 h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant' }, 'Total Members')
             ),
             h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-4' },
-                h('p', { className: 'font-headline text-headline-md font-bold text-policy-blue' }, String(comm.length)),
+                h('p', { className: 'font-headline text-headline-md font-bold text-primary' }, String(comm.length)),
                 h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant' }, 'Active Commissions')
             ),
             h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-4' },
@@ -402,22 +406,25 @@ function renderDashboard(data) {
                     ...comm.map(c => {
                         const commName = c.name;
                         const commIcon = c.icon || 'group';
-                        return h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-4 hover:border-policy-mint transition-colors group cursor-pointer flex flex-col', onClick: () => navigateToCommission(data, commName) },
-                            h('div', { className: 'flex justify-between items-start mb-3' },
-                                h('div', { className: 'flex items-center gap-2' },
-                                    h('span', { className: 'material-symbols-outlined text-policy-blue text-sm', innerHTML: commIcon }),
-                                    h('span', { className: 'bg-surface-container px-2 py-1 rounded font-label-md text-label-md text-on-surface-variant' }, commName)
+                        return h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl hover:shadow-md transition-all group cursor-pointer flex flex-col', onClick: () => navigateToCommission(data, commName) },
+                            h('div', { className: 'h-1.5 rounded-t-xl bg-policy-blue' }),
+                            h('div', { className: 'p-4 flex flex-col flex-grow' },
+                                h('div', { className: 'flex justify-between items-start mb-3' },
+                                    h('div', { className: 'flex items-center gap-2' },
+                                        h('span', { className: 'material-symbols-outlined text-policy-blue text-sm', innerHTML: commIcon }),
+                                        h('span', { className: 'font-headline text-headline-sm text-on-surface font-semibold' }, commName)
+                                    ),
+                                    h('span', { className: 'material-symbols-outlined text-on-surface-variant group-hover:text-policy-blue transition-colors text-sm', innerHTML: 'arrow_forward' })
                                 ),
-                                h('span', { className: 'material-symbols-outlined text-on-surface-variant group-hover:text-policy-blue transition-colors text-sm', innerHTML: 'arrow_forward' })
-                            ),
-                            h('h4', { className: 'font-body-lg text-body-lg font-semibold text-primary mb-2' }, c.commissioner || 'Commissioner'),
-                            h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant mb-4' }, `${c.member_count} members`),
-                            h('div', { className: 'mt-auto flex items-center gap-2' },
-                                ...c.members.slice(0, 3).map(m => {
-                                    const cc = getInitialsColor(m.name);
-                                    return h('div', { className: `w-7 h-7 rounded-full ${cc} flex items-center justify-center text-[10px] font-bold border border-white -mr-1.5`, title: m.name }, initials(m.name));
-                                }),
-                                c.members.length > 3 ? h('span', { className: 'font-body-sm text-body-sm text-on-surface-variant ml-1' }, `+${c.members.length - 3}`) : null
+                                h('h4', { className: 'font-body text-sm text-on-surface-variant mb-2' }, c.commissioner || 'Commissioner'),
+                                h('p', { className: 'font-body text-xs text-on-surface-variant mb-4' }, `${c.member_count} members`),
+                                h('div', { className: 'mt-auto flex items-center gap-2' },
+                                    ...c.members.slice(0, 3).map(m => {
+                                        const cc = getInitialsColor(m.name);
+                                        return h('div', { className: `w-7 h-7 rounded-full ${cc} flex items-center justify-center text-[10px] font-bold border border-white -mr-1.5`, title: m.name }, initials(m.name));
+                                    }),
+                                    c.members.length > 3 ? h('span', { className: 'font-body text-xs text-on-surface-variant ml-1' }, `+${c.members.length - 3}`) : null
+                                )
                             )
                         );
                     })

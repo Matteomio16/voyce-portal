@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>The Voyce - Member Portal</title>
+<title>VOYCE - Member Portal</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&family=Public+Sans:wght@400;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
@@ -358,7 +358,7 @@ function renderDashboard(data) {
         // Welcome Section
         h('section', { className: 'mb-stack-lg flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4' },
             h('div', null,
-                h('h2', { className: 'font-headline text-headline-lg-mobile md:text-headline-lg text-primary' }, 'The Voyce Member Portal'),
+                h('h2', { className: 'font-headline text-headline-lg-mobile md:text-headline-lg text-primary' }, 'VOYCE Member Portal'),
                 h('p', { className: 'font-body text-body-md text-on-surface-variant mt-2 max-w-2xl' },
                     `${data.total_members} members across ${comm.length} commissions. Explore the network, browse knowledge, and connect.`
                 )
@@ -398,12 +398,16 @@ function renderDashboard(data) {
                     ),
                     h('a', { className: 'font-label-md text-label-md text-policy-blue hover:underline cursor-pointer', onClick: () => navigate('members', data) }, 'View All')
                 ),
-                h('div', { className: 'grid grid-cols-1 sm:grid-cols-2 gap-4' },
-                    ...comm.slice(0, 6).map(c => {
+                h('div', { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4' },
+                    ...comm.map(c => {
                         const commName = c.name;
+                        const commIcon = c.icon || 'group';
                         return h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-4 hover:border-policy-mint transition-colors group cursor-pointer flex flex-col', onClick: () => navigateToCommission(data, commName) },
                             h('div', { className: 'flex justify-between items-start mb-3' },
-                                h('span', { className: 'bg-surface-container px-2 py-1 rounded font-label-md text-label-md text-on-surface-variant' }, commName),
+                                h('div', { className: 'flex items-center gap-2' },
+                                    h('span', { className: 'material-symbols-outlined text-policy-blue text-sm', innerHTML: commIcon }),
+                                    h('span', { className: 'bg-surface-container px-2 py-1 rounded font-label-md text-label-md text-on-surface-variant' }, commName)
+                                ),
                                 h('span', { className: 'material-symbols-outlined text-on-surface-variant group-hover:text-policy-blue transition-colors text-sm', innerHTML: 'arrow_forward' })
                             ),
                             h('h4', { className: 'font-body-lg text-body-lg font-semibold text-primary mb-2' }, c.commissioner || 'Commissioner'),
@@ -528,7 +532,6 @@ function renderMembersPage(data) {
         })(),
         // Commission nodes placed around the map — dynamically from data
         ...(() => {
-            const icons = ['bolt', 'eco', 'flight', 'account_balance', 'public', 'groups', 'flag', 'gavel', 'trending_up', 'computer', 'psychology', 'scale'];
             const positions = [
                 { x: '50%', y: '12%' }, { x: '28%', y: '18%' }, { x: '72%', y: '18%' },
                 { x: '85%', y: '40%' }, { x: '72%', y: '72%' }, { x: '28%', y: '72%' },
@@ -537,10 +540,11 @@ function renderMembersPage(data) {
             ];
             return data.commissions.map((c, i) => {
                 const pos = positions[i % positions.length];
+                const commIcon = c.icon || 'group';
                 return h('div', { className: 'absolute transition-all hover:scale-105 cursor-pointer', style: { left: pos.x, top: pos.y, transform: 'translate(-50%, -50%)' }, onClick: () => navigateToCommission(data, c.name) },
                     h('div', { className: 'p-2 md:p-3 bg-surface-container-lowest border border-border-low rounded-xl shadow-sm text-center hover:border-policy-blue transition-all min-w-[120px] md:min-w-[140px]' },
                         h('div', { className: 'flex items-center justify-center gap-1 mb-1' },
-                            h('span', { className: 'material-symbols-outlined text-policy-blue text-sm md:text-base', innerHTML: icons[i % icons.length] }),
+                            h('span', { className: 'material-symbols-outlined text-policy-blue text-sm md:text-base', innerHTML: commIcon }),
                             h('h4', { className: 'font-label-md text-label-md text-on-surface text-xs md:text-sm' }, c.name)
                         ),
                         c.commissioner ? h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant text-[10px] md:text-xs' }, c.commissioner) : null,
@@ -588,7 +592,9 @@ function renderCommissionPage(data, commName) {
         h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl p-6 md:p-8 mb-6' },
             h('div', { className: 'flex flex-col md:flex-row justify-between items-start md:items-center gap-4' },
                 h('div', { className: 'flex items-center gap-4' },
-                    h('div', { className: `w-16 h-16 rounded-full ${col} flex items-center justify-center text-xl font-bold shrink-0` }, initials(commName)),
+                    h('div', { className: `w-16 h-16 rounded-full ${col} flex items-center justify-center shrink-0` },
+                        h('span', { className: 'material-symbols-outlined text-2xl text-policy-blue', innerHTML: comm.icon || 'group' })
+                    ),
                     h('div', null,
                         h('h2', { className: 'font-headline text-headline-md font-bold text-on-surface' }, commName),
                         h('p', { className: 'font-body text-body-md text-on-surface-variant mt-1' },
@@ -647,7 +653,7 @@ function renderKnowledgeHub(data) {
     
     const sections = [
         { title: 'Featured Onboarding Essentials', icon: 'book', items: [
-            { name: 'The Voyce Method: Manifesto', type: 'Handbook', tag: 'V 2.1', source: 'Board of Directors', icon: 'book' },
+            { name: 'The VOYCE Method: Manifesto', type: 'Handbook', tag: 'V 2.1', source: 'Board of Directors', icon: 'book' },
             { name: 'Drafting Policy Memos: A Standard', type: 'Guideline', tag: 'Core', source: 'Policy Commission', icon: 'history_edu' },
             { name: 'Commissioner & Fellow Code of Conduct', type: 'Handbook', tag: 'V 1.0', source: 'Legal Affairs', icon: 'gavel' },
             { name: 'Intro to European Policy Making', type: 'Course', tag: 'New', source: 'European Identity', icon: 'school' }
@@ -909,7 +915,7 @@ function renderApp(data) {
     // Sidebar
     const sidebar = h('aside', { className: 'bg-surface-container-lowest w-sidebar-width h-screen fixed left-0 top-0 border-r border-border-low hidden md:flex flex-col py-stack-lg z-50' },
         h('div', { className: 'px-gutter mb-stack-lg' },
-            h('h1', { className: 'font-headline text-headline-md font-bold text-policy-blue' }, 'The Voyce'),
+            h('h1', { className: 'font-headline text-headline-md font-bold text-policy-blue' }, 'VOYCE'),
             h('p', { className: 'font-body-sm text-body-sm text-on-surface-variant mt-1' }, 'Member Portal')
         ),
         h('nav', { className: 'flex-1 px-4 space-y-1' },
@@ -943,7 +949,7 @@ function renderApp(data) {
                 h('button', { className: 'md:hidden p-2 text-on-surface-variant', onClick: () => toggleMobileMenu() },
                     h('span', { className: 'material-symbols-outlined', innerHTML: 'menu' })
                 ),
-                h('h2', { className: 'font-headline text-headline-sm text-policy-blue hidden md:block' }, 'The Voyce')
+                h('h2', { className: 'font-headline text-headline-sm text-policy-blue hidden md:block' }, 'VOYCE')
             ),
             h('div', { className: 'flex-1 max-w-md mx-4 hidden md:block' },
                 h('div', { className: 'relative' },

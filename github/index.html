@@ -83,7 +83,8 @@
     }
 </script>
 <style>
-    body { font-family: 'Hanken Grotesk', sans-serif; background-color: #faf9f5; color: #1b1c1a; }
+    body { font-family: 'Hanken Grotesk', sans-serif; background-color: #faf9f5; color: #1b1c1a; overflow-x: hidden; }
+    html { overflow-x: hidden; }
     .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
     .page { display: none !important; }
     .page.active { display: flex !important; flex-direction: column; flex-grow: 1; }
@@ -351,23 +352,25 @@ function renderDashboard(data) {
     const commissioners = data.commissioners;
     
     return h('div', { className: 'flex-grow pt-24 px-gutter pb-16 max-w-container-max mx-auto w-full' },
-        // Welcome Hero Banner
-        h('section', { className: 'mb-stack-lg rounded-2xl overflow-hidden' },
-            h('div', { className: 'relative bg-gradient-to-br from-primary via-primary-container to-secondary px-8 py-10 md:py-14' },
-                h('div', { className: 'relative z-10' },
-                    h('p', { className: 'font-headline text-sm font-semibold text-on-primary/70 uppercase tracking-widest mb-2' }, 'Dashboard Overview'),
-                    h('h2', { className: 'font-headline text-headline-lg-mobile md:text-headline-lg font-bold text-white mb-3' }, 'VOYCE Member Portal'),
-                    h('p', { className: 'font-body text-body-md text-white/70 max-w-xl mb-6' },
-                        `${data.total_members} members across ${comm.length} commissions. Explore the network, browse knowledge, and connect.`
+        // Welcome Hero Banner (compact)
+        h('section', { className: 'mb-stack-md rounded-xl overflow-hidden' },
+            h('div', { className: 'relative bg-gradient-to-br from-primary via-primary-container to-secondary px-5 py-5 md:py-6' },
+                h('div', { className: 'relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4' },
+                    h('div', null,
+                        h('p', { className: 'font-headline text-xs font-semibold text-on-primary/60 uppercase tracking-widest mb-1' }, 'Dashboard Overview'),
+                        h('h2', { className: 'font-headline text-headline-md md:text-headline-md font-bold text-white mb-1' }, 'VOYCE Member Portal'),
+                        h('p', { className: 'font-body text-sm text-white/60 max-w-lg' },
+                            `${data.total_members} members across ${comm.length} commissions. Explore the network, browse knowledge, and connect.`
+                        )
                     ),
-                    h('div', { className: 'flex flex-wrap gap-6 mb-8' },
-                        h('div', { className: 'text-white' }, h('p', { className: 'font-headline text-headline-md font-bold' }, String(data.total_members)), h('p', { className: 'font-body-sm text-sm text-white/60' }, 'Members')),
-                        h('div', { className: 'text-white' }, h('p', { className: 'font-headline text-headline-md font-bold' }, String(comm.length)), h('p', { className: 'font-body-sm text-sm text-white/60' }, 'Commissions')),
-                        h('div', { className: 'text-white' }, h('p', { className: 'font-headline text-headline-md font-bold' }, String(Object.keys(commissioners).length)), h('p', { className: 'font-body-sm text-sm text-white/60' }, 'Commissioners'))
-                    ),
-                    h('button', { className: 'bg-white text-primary px-6 py-3 rounded-full font-label-md text-label-md font-bold flex items-center gap-2 hover:bg-white/90 transition-colors shadow-lg', onClick: () => navigate('members', data) },
-                        h('span', { className: 'material-symbols-outlined text-sm', innerHTML: 'groups' }),
-                        'View Members Map'
+                    h('div', { className: 'flex items-center gap-5 shrink-0' },
+                        h('div', { className: 'text-center' }, h('p', { className: 'font-headline text-headline-md font-bold text-white' }, String(data.total_members)), h('p', { className: 'text-[10px] text-white/50' }, 'Members')),
+                        h('div', { className: 'text-center' }, h('p', { className: 'font-headline text-headline-md font-bold text-white' }, String(comm.length)), h('p', { className: 'text-[10px] text-white/50' }, 'Commissions')),
+                        h('div', { className: 'text-center' }, h('p', { className: 'font-headline text-headline-md font-bold text-white' }, String(Object.keys(commissioners).length)), h('p', { className: 'text-[10px] text-white/50' }, 'Commissioners')),
+                        h('button', { className: 'bg-white text-primary px-5 py-2 rounded-full text-xs font-bold flex items-center gap-2 hover:bg-white/90 transition-colors shadow-md', onClick: () => navigate('members', data) },
+                            h('span', { className: 'material-symbols-outlined text-xs', innerHTML: 'groups' }),
+                            'View Map'
+                        )
                     )
                 )
             )
@@ -906,17 +909,95 @@ function filterDirectory() {
     if (countEl) countEl.textContent = `Showing ${count} of ${rows.length} members`;
 }
 
+// ===== STAKEHOLDERS PAGE =====
+function renderStakeholdersPage(data) {
+    const stakeholders = [
+        { name: 'European Commission', org: 'EU Executive Body', type: 'Institution', focus: ['Policy', 'Legislation'], engagement: 'High', icon: 'account_balance' },
+        { name: 'European Parliament', org: 'Legislative Body', type: 'Institution', focus: ['Democratic Oversight', 'Rights'], engagement: 'High', icon: 'gavel' },
+        { name: 'European Council', org: 'EU Leaders', type: 'Institution', focus: ['Strategic Direction', 'Security'], engagement: 'Medium', icon: 'flag' },
+        { name: 'UN Youth Envoy', org: 'United Nations', type: 'International', focus: ['Youth Policy', 'SDGs'], engagement: 'Medium', icon: 'public' },
+        { name: 'OECD Policy Division', org: 'OECD', type: 'International', focus: ['Economic Policy', 'Education'], engagement: 'Low', icon: 'trending_up' },
+        { name: 'ECFR', org: 'European Council on Foreign Relations', type: 'Think Tank', focus: ['Foreign Policy', 'Security'], engagement: 'High', icon: 'diversity_3' },
+        { name: 'Chatham House', org: 'Royal Institute of International Affairs', type: 'Think Tank', focus: ['International Affairs', 'Governance'], engagement: 'Medium', icon: 'school' },
+        { name: 'Bruegel', org: 'Economic Think Tank', type: 'Think Tank', focus: ['Economics', 'Trade'], engagement: 'Medium', icon: 'account_balance' },
+        { name: 'Friends of Europe', org: 'EU Think Tank', type: 'NGO', focus: ['EU Policy', 'Integration'], engagement: 'High', icon: 'handshake' },
+        { name: 'European Youth Forum', org: 'Youth Network', type: 'NGO', focus: ['Youth Rights', 'Participation'], engagement: 'High', icon: 'groups' },
+        { name: 'EU DG CONNECT', org: 'European Commission', type: 'Institution', focus: ['Digital Rights', 'Technology'], engagement: 'Medium', icon: 'computer' },
+        { name: 'EU DG CLIMA', org: 'European Commission', type: 'Institution', focus: ['Climate Policy', 'Green Deal'], engagement: 'High', icon: 'eco' },
+    ];
+
+    return h('div', { className: 'flex-1 pt-24 pb-stack-lg px-gutter max-w-container-max mx-auto w-full' },
+        h('header', { className: 'flex flex-col md:flex-row justify-between items-start md:items-end gap-stack-md pb-stack-md border-b border-border-low mb-stack-md' },
+            h('div', null,
+                h('h2', { className: 'font-headline text-headline-lg-mobile md:text-headline-lg font-bold text-primary' }, 'Stakeholder Directory'),
+                h('p', { className: 'font-body text-body-md text-on-surface-variant' }, 'Manage and track relationships with key external contacts across Europe.')
+            ),
+            h('div', { className: 'flex gap-2' },
+                h('button', { className: 'bg-policy-blue text-on-primary font-label-md text-label-md px-stack-md py-stack-sm rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2' },
+                    h('span', { className: 'material-symbols-outlined text-sm', innerHTML: 'add' }),
+                    'Add Stakeholder'
+                )
+            )
+        ),
+        // Filters
+        h('section', { className: 'flex flex-wrap items-center gap-stack-md bg-surface-container-lowest p-stack-md rounded-xl border border-border-low mb-stack-md' },
+            h('div', { className: 'flex-1 min-w-[200px]' },
+                h('div', { className: 'relative' },
+                    h('span', { className: 'material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm', innerHTML: 'search' }),
+                    h('input', { className: 'w-full pl-9 pr-4 py-2 bg-surface-subtle border-none rounded-lg focus:ring-1 focus:ring-policy-blue text-sm font-body placeholder:text-on-surface-variant', placeholder: 'Search by name, org, or keyword...' })
+                )
+            ),
+            h('div', { className: 'flex items-center gap-stack-sm flex-wrap' },
+                h('select', { className: 'bg-surface-subtle border-none rounded-lg focus:ring-1 focus:ring-policy-blue text-sm text-on-surface-variant py-2 pl-3 pr-8' },
+                    h('option', null, 'All Types'),
+                    h('option', null, 'Institution'),
+                    h('option', null, 'Think Tank'),
+                    h('option', null, 'NGO'),
+                    h('option', null, 'International')
+                )
+            )
+        ),
+        // Stakeholder cards grid
+        h('div', { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4' },
+            ...stakeholders.map(s =>
+                h('div', { className: 'bg-surface-container-lowest border border-border-low rounded-xl hover:shadow-md transition-all cursor-pointer flex flex-col' },
+                    h('div', { className: 'h-1.5 rounded-t-xl bg-policy-blue' }),
+                    h('div', { className: 'p-5 flex flex-col gap-3' },
+                        h('div', { className: 'flex items-start gap-3' },
+                            h('div', { className: 'w-10 h-10 rounded-xl bg-secondary-container/50 flex items-center justify-center shrink-0' },
+                                h('span', { className: 'material-symbols-outlined text-primary text-lg', innerHTML: s.icon })
+                            ),
+                            h('div', { className: 'min-w-0' },
+                                h('h4', { className: 'font-headline text-sm font-semibold text-on-surface truncate' }, s.name),
+                                h('p', { className: 'text-xs text-on-surface-variant truncate' }, s.org)
+                            )
+                        ),
+                        h('div', { className: 'flex items-center gap-2' },
+                            h('span', { className: 'px-2 py-0.5 bg-secondary-container/50 text-primary rounded text-[11px] font-medium' }, s.type),
+                            h('span', { className: `px-2 py-0.5 rounded text-[11px] font-medium ${s.engagement === 'High' ? 'bg-policy-blue/10 text-primary' : s.engagement === 'Medium' ? 'bg-surface-subtle text-on-surface-variant' : 'bg-surface-subtle text-on-surface-variant'}` }, s.engagement + ' Engagement')
+                        ),
+                        h('div', { className: 'flex flex-wrap gap-1' },
+                            ...s.focus.map(f => h('span', { className: 'px-2 py-0.5 bg-surface-subtle rounded text-[10px] text-on-surface-variant' }, f))
+                        )
+                    )
+                )
+            )
+        )
+    );
+}
+
 // ===== MAIN APP RENDER =====
 function renderApp(data) {
     const app = document.getElementById('app');
     app.innerHTML = '';
     
-    const pages = ['dashboard', 'members', 'knowledge', 'directory', 'commission'];
+    const pages = ['dashboard', 'members', 'knowledge', 'directory', 'stakeholders', 'commission'];
     const navItems = [
         { id: 'dashboard', icon: 'dashboard', label: 'Dashboard' },
         { id: 'members', icon: 'groups', label: 'Members Map' },
         { id: 'knowledge', icon: 'menu_book', label: 'Knowledge Hub' },
-        { id: 'directory', icon: 'handshake', label: 'Directory' }
+        { id: 'directory', icon: 'handshake', label: 'Directory' },
+        { id: 'stakeholders', icon: 'connect_without_contact', label: 'Stakeholders' }
     ];
 
     // Sidebar
@@ -1007,6 +1088,7 @@ function renderApp(data) {
             ) :
             p === 'knowledge' ? renderKnowledgeHub(data) :
             p === 'commission' ? h('div', { className: 'commission-inner flex-1' }) :
+            p === 'stakeholders' ? renderStakeholdersPage(data) :
             renderStakeholderDirectory(data)
         )),
         // Mobile bottom nav

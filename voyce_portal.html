@@ -66,8 +66,8 @@
                 },
                 spacing: {
                     "unit": "4px",
-                    "container-max": "1440px",
-                    "sidebar-width": "260px",
+                    "container-max": "1280px",
+                    "sidebar-width": "240px",
                     "gutter": "24px",
                     "margin-mobile": "16px",
                     "stack-sm": "8px",
@@ -85,7 +85,8 @@
 <style>
     body { font-family: 'Hanken Grotesk', sans-serif; background-color: #faf9f5; color: #1b1c1a; overflow-x: hidden; }
     html { overflow-x: hidden; }
-    #app { overflow-x: hidden; }
+    #app { overflow-x: hidden; max-width: 100vw; }
+    .page.active { max-width: calc(100vw - 0px); }
     .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
     .page { display: none !important; }
     .page.active { display: flex !important; flex-direction: column; flex-grow: 1; }
@@ -167,10 +168,14 @@ function h(tag, attrs, ...children) {
             else el.setAttribute(k, v);
         }
     }
-    for (const c of children) {
-        if (c == null) continue;
-        el.append(typeof c === 'string' ? document.createTextNode(c) : c);
+    function appendChildren(items) {
+        for (const c of items) {
+            if (c == null) continue;
+            if (Array.isArray(c)) { appendChildren(c); continue; }
+            el.append(typeof c === 'string' ? document.createTextNode(c) : c);
+        }
     }
+    appendChildren(children);
     return el;
 }
 
@@ -355,23 +360,12 @@ function renderDashboard(data) {
     return h('div', { className: 'flex-grow pt-24 px-gutter pb-16 max-w-container-max mx-auto w-full' },
         // Welcome Hero Banner (compact)
         h('section', { className: 'mb-stack-md rounded-xl overflow-hidden' },
-            h('div', { className: 'relative bg-gradient-to-br from-primary via-primary-container to-secondary px-5 py-5 md:py-6' },
-                h('div', { className: 'relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4' },
-                    h('div', null,
-                        h('p', { className: 'font-headline text-xs font-semibold text-on-primary/60 uppercase tracking-widest mb-1' }, 'Dashboard Overview'),
-                        h('h2', { className: 'font-headline text-headline-md md:text-headline-md font-bold text-white mb-1' }, 'VOYCE Member Portal'),
-                        h('p', { className: 'font-body text-sm text-white/60 max-w-lg' },
-                            `${data.total_members} members across ${comm.length} commissions. Explore the network, browse knowledge, and connect.`
-                        )
-                    ),
-                    h('div', { className: 'flex items-center gap-5 shrink-0' },
-                        h('div', { className: 'text-center' }, h('p', { className: 'font-headline text-headline-md font-bold text-white' }, String(data.total_members)), h('p', { className: 'text-[10px] text-white/50' }, 'Members')),
-                        h('div', { className: 'text-center' }, h('p', { className: 'font-headline text-headline-md font-bold text-white' }, String(comm.length)), h('p', { className: 'text-[10px] text-white/50' }, 'Commissions')),
-                        h('div', { className: 'text-center' }, h('p', { className: 'font-headline text-headline-md font-bold text-white' }, String(Object.keys(commissioners).length)), h('p', { className: 'text-[10px] text-white/50' }, 'Commissioners')),
-                        h('button', { className: 'bg-white text-primary px-5 py-2 rounded-full text-xs font-bold flex items-center gap-2 hover:bg-white/90 transition-colors shadow-md', onClick: () => navigate('members', data) },
-                            h('span', { className: 'material-symbols-outlined text-xs', innerHTML: 'groups' }),
-                            'View Map'
-                        )
+            h('div', { className: 'relative bg-gradient-to-br from-primary via-primary-container to-secondary px-5 py-4 md:py-5' },
+                h('div', { className: 'relative z-10' },
+                    h('p', { className: 'font-headline text-xs font-semibold text-on-primary/60 uppercase tracking-widest mb-1' }, 'Dashboard Overview'),
+                    h('h2', { className: 'font-headline text-headline-md font-bold text-white mb-1' }, 'VOYCE Member Portal'),
+                    h('p', { className: 'font-body text-sm text-white/60' },
+                        `${data.total_members} members across ${comm.length} commissions. Explore the network, browse knowledge, and connect.`
                     )
                 )
             )
@@ -1033,7 +1027,7 @@ function renderApp(data) {
     // Main area wrapper
     const main = h('div', { className: 'md:ml-sidebar-width w-full flex flex-col min-h-screen' },
         // Top bar
-        h('header', { className: 'bg-surface-container-lowest/80 backdrop-blur-md h-16 fixed top-0 right-0 w-full md:w-[calc(100%-280px)] z-40 border-b border-border-low flex justify-between items-center px-gutter' },
+        h('header', { className: 'bg-surface-container-lowest/80 backdrop-blur-md h-16 fixed top-0 right-0 w-full md:w-[calc(100%-240px)] z-40 border-b border-border-low flex justify-between items-center px-4 md:px-6' },
             h('div', { className: 'flex items-center gap-4' },
                 h('button', { className: 'md:hidden p-2 text-on-surface-variant', onClick: () => toggleMobileMenu() },
                     h('span', { className: 'material-symbols-outlined', innerHTML: 'menu' })

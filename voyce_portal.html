@@ -84,8 +84,8 @@
 <style>
     body { font-family: 'Public Sans', sans-serif; background-color: #f9f9fc; color: #1a1c1e; }
     .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-    .page { display: none; }
-    .page.active { display: block; }
+    .page { display: none !important; }
+    .page.active { display: flex !important; flex-direction: column; flex-grow: 1; }
     .nav-link.active { color: #005566 !important; font-weight: 700 !important; background-color: #dae1e3 !important; border-left: 4px solid #005566 !important; }
     .canvas-grid { background-image: radial-gradient(#DDE1E4 1px, transparent 1px); background-size: 24px 24px; }
     .node-pulse { animation: pulse-ring 2s cubic-bezier(0.4,0,0.6,1) infinite; }
@@ -153,6 +153,7 @@ const PORTAL_DATA = null; // loaded from JSON
 async function init() {
     const resp = await fetch('voyce_portal_data.json');
     const data = await resp.json();
+    portalData = data;
     renderApp(data);
 }
 
@@ -202,24 +203,37 @@ function bioPreview(bio) {
 }
 
 // ===== NAVIGATION =====
+let portalData = null;
 let currentCommission = null;
 
 function navigate(page, state) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+    // Pre-render commission content into page-commission before showing it
     if (page === 'commission' && state) {
         currentCommission = state;
         const container = document.getElementById('page-commission');
         if (container) {
             const inner = container.querySelector('.commission-inner');
-            if (inner) inner.replaceWith(renderCommissionPage(state));
-            else container.appendChild(renderCommissionPage(state));
+            const rendered = renderCommissionPage(portalData, state.name || state);
+            if (inner) inner.replaceWith(rendered);
+            else container.appendChild(rendered);
         }
     }
+
+    // Activate the target page
     const pageEl = document.getElementById('page-' + page);
-    if (pageEl) pageEl.classList.add('active');
-    const link = document.querySelector(`[data-page="${page}"]`);
+    if (pageEl) {
+        pageEl.classList.add('active');
+    }
+
+    // Activate the sidebar nav link — also handle commission page by highlighting 'members'
+    const navPages = ['dashboard', 'members', 'knowledge', 'directory'];
+    const navPage = navPages.includes(page) ? page : 'members';
+    const link = document.querySelector(`[data-page="${navPage}"]`);
     if (link) link.classList.add('active');
+
     window.scrollTo(0, 0);
 }
 
@@ -547,21 +561,9 @@ function renderMembersPage(data) {
 }
 
 function navigateToCommission(data, commName) {
-    navigate('commission', null);
-    // Wait for the page container to mount
-    const check = setInterval(() => {
-        const page = document.getElementById('page-commission');
-        if (page) {
-            let inner = page.querySelector('.commission-inner');
-            if (!inner) {
-                inner = h('div', { className: 'commission-inner flex-1' });
-                page.appendChild(inner);
-            }
-            inner.replaceWith(renderCommissionPage(data, commName));
-            clearInterval(check);
-        }
-    }, 20);
-    setTimeout(() => clearInterval(check), 2000);
+    const comm = data.commissions.find(c => c.name === commName);
+    if (!comm) return;
+    navigate('commission', comm);
 }
 
 function renderCommissionPage(data, commName) {
